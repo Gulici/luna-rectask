@@ -42,3 +42,4 @@ class MeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = Measurement
         fields = '__all__'
+        read_only_fields = ['system', 'timestamp']

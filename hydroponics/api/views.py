@@ -1,14 +1,15 @@
-from django.contrib.auth import authenticate
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import generics
 from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import UserRegisterSerializer, UserSerializer, HydroponicSystemSerializer
-from .models import HydroponicSystem
+from .serializers import UserRegisterSerializer, UserSerializer, HydroponicSystemSerializer, MeasurementSerializer
+from .models import HydroponicSystem, Measurement
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+import logging
+
+logger = logging.getLogger(__name__)
 
 User = get_user_model()
 
@@ -92,4 +93,74 @@ class HydroponicsSystemView(APIView):
         user = requset.user
         system = get_object_or_404(HydroponicSystem, id=pk, owner=user)
         system.delete()
-        return Response({'message': 'System id:{pk} deleted succesfully'}, status=status.HTTP_204_NO_CONTENT)
+        return Response({'message': f'System id:{pk} deleted succesfully'}, status=status.HTTP_204_NO_CONTENT)
+    
+    
+class MeasurementView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    # checking that is there system which have specific id and current user is its owner 
+    def is_user_and_system_valid(self, request, system_id):
+        return HydroponicSystem.objects.filter(id=system_id, owner=request.user).exists()
+
+    def post(self, request, system_id):
+        if not self.is_user_and_system_valid(request, system_id):
+            return Response({'error': 'No access to this system'}, status=status.HTTP_403_FORBIDDEN)
+        
+        
+        system =  get_object_or_404(HydroponicSystem, id=system_id)
+          
+        serializer = MeasurementSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save(system=system)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    def get(self, request, system_id, measurement_id=None):
+        if not self.is_user_and_system_valid(request, system_id):
+            return Response({'error': 'No access to this system'}, status=status.HTTP_403_FORBIDDEN)
+        
+        system =  get_object_or_404(HydroponicSystem, id=system_id)
+        
+        if measurement_id:
+            measurement = get_object_or_404(Measurement, id=measurement_id)
+            serializer = MeasurementSerializer(measurement)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        
+        measurements = Measurement.objects.filter(system=system)
+        serializer = MeasurementSerializer(measurements, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+    
+    def put(self, request, system_id, measurement_id):
+        if not self.is_user_and_system_valid(request, system_id):
+            return Response({'error': 'No access to this system'}, status=status.HTTP_403_FORBIDDEN)
+        
+        measurement = get_object_or_404(Measurement, id=measurement_id)
+        serializer = MeasurementSerializer(measurement, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    def patch(self, request, system_id, measurement_id):
+        if not self.is_user_and_system_valid(request, system_id):
+            return Response({'error': 'No access to this system'}, status=status.HTTP_403_FORBIDDEN)
+        
+        measurement = get_object_or_404(Measurement, id=measurement_id)
+        serializer = MeasurementSerializer(measurement, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    def delete(self, request, system_id, measurement_id):
+        if not self.is_user_and_system_valid(request, system_id):
+            return Response({'error': 'No access to this system'}, status=status.HTTP_403_FORBIDDEN)
+        
+        measurement = get_object_or_404(Measurement, id=measurement_id)
+        measurement.delete()
+        return Response({'message': f'Measurement id:{measurement_id} deleted successfully'}, status=status.HTTP_204_NO_CONTENT)
+    
+    
+    
+        

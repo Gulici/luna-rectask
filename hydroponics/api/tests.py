@@ -2,7 +2,7 @@ from rest_framework.test import APITestCase
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
-from .models import HydroponicSystem
+from .models import HydroponicSystem, Measurement
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -80,3 +80,109 @@ class HydroponicSystemAPITestCase(APITestCase):
         response = self.client.post(self.url, data, format='json')
         
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        
+        
+class MeasurementAPITestCase(APITestCase):
+
+    def setUp(self):
+        """ Prepare user, system, and authentication token """
+        self.user = User.objects.create_user(username='testuser', password='testpass')
+
+        # Authenticate the user
+        refresh = RefreshToken.for_user(self.user)
+        self.access_token = str(refresh.access_token)
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
+
+        # Create a hydroponic system
+        self.system = HydroponicSystem.objects.create(name="Test System", owner=self.user)
+
+        # Create a test measurement
+        self.measurement = Measurement.objects.create(
+            system=self.system, ph=6.5, temperature=22.3, tds=800
+        )
+
+        # API URLs
+        self.measurements_url = f"/api/systems/{self.system.id}/measurements/"
+        self.measurement_detail_url = f"/api/systems/{self.system.id}/measurements/{self.measurement.id}/"
+
+    # Test creating a new measurement
+    def test_create_measurement(self):
+        data = {"ph": 7.0, "temperature": 24.0, "tds": 850}
+        response = self.client.post(self.measurements_url, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data["ph"], 7.0)
+        self.assertEqual(response.data["temperature"], 24.0)
+        self.assertEqual(response.data["tds"], 850)
+        self.assertEqual(response.data["system"], self.system.id)
+
+    # Test retrieving a list of measurements for a specific system
+    def test_get_measurement_list(self):
+        Measurement.objects.create(system=self.system, ph=6.8, temperature=23.5, tds=780)
+        Measurement.objects.create(system=self.system, ph=6.2, temperature=21.0, tds=820)
+
+        response = self.client.get(self.measurements_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 3) 
+
+    # Test retrieving a specific measurement
+    def test_get_measurement_detail(self):
+        response = self.client.get(self.measurement_detail_url)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["ph"], self.measurement.ph)
+        self.assertEqual(response.data["temperature"], self.measurement.temperature)
+        self.assertEqual(response.data["tds"], self.measurement.tds)
+
+    # Test updating a measurement (PUT)
+    def test_update_measurement(self):
+        data = {"ph": 7.2, "temperature": 25.0, "tds": 900}
+        response = self.client.put(self.measurement_detail_url, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["ph"], 7.2)
+        self.assertEqual(response.data["temperature"], 25.0)
+        self.assertEqual(response.data["tds"], 900)
+
+    # Test partial update of a measurement (PATCH)
+    def test_partial_update_measurement(self):
+        data = {"ph": 6.9}
+        response = self.client.patch(self.measurement_detail_url, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data["ph"], 6.9)  # Updated value
+        self.assertEqual(response.data["temperature"], self.measurement.temperature)  # Unchanged value
+
+    # Test deleting a measurement
+    def test_delete_measurement(self):
+        #before
+        self.assertTrue(Measurement.objects.filter(id=self.measurement.id).exists())
+
+        response_del = self.client.delete(self.measurement_detail_url)
+        response_get = self.client.get(self.measurement_detail_url)
+
+        #after
+        self.assertEqual(response_del.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND) 
+
+    # Test unauthorized user cannot create a measurement
+    def test_unauthorized_user_create_measurement(self):
+        self.client.credentials()  # Disable authentication
+        data = {"ph": 7.1, "temperature": 23.0, "tds": 870}
+        response = self.client.post(self.measurements_url, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    # Test that a user cannot edit a measurement in another user's system
+    def test_user_cannot_edit_other_user_measurement(self):
+        other_user = User.objects.create_user(username='otheruser', password='testpass')
+        other_system = HydroponicSystem.objects.create(name="Other System", owner=other_user)
+        other_measurement = Measurement.objects.create(system=other_system, ph=6.0, temperature=20.0, tds=750)
+
+        # Attempt to edit another user's measurement
+        other_measurement_url = f"/api/systems/{other_system.id}/measurements/{other_measurement.id}/"
+        data = {"ph": 7.0}
+        response = self.client.patch(other_measurement_url, data, format='json')
+
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
