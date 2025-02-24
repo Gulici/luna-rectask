@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from api.models import HydroponicSystem, Measurement
 from django.contrib.auth import get_user_model
+from api.models import HydroponicSystem, Measurement
 
 User = get_user_model()
 

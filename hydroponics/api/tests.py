@@ -1,8 +1,8 @@
 from rest_framework.test import APITestCase
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .models import HydroponicSystem, Measurement
 from django.contrib.auth import get_user_model
+from .models import HydroponicSystem, Measurement
 
 User = get_user_model()
 
@@ -112,7 +112,7 @@ class MeasurementAPITestCase(APITestCase):
         self.m_det_url = (
             f"/api/systems/{self.system.id}/measurements/{self.measurement.id}/"
         )
-        
+
     # Test creating a new measurement
     def test_create_measurement(self):
         data = {"ph": 7.0, "temperature": 24.0, "tds": 850}
@@ -134,7 +134,7 @@ class MeasurementAPITestCase(APITestCase):
         response = self.client.get(self.m_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 3)
+        self.assertEqual(len(response.data['results']), 3)
 
     # Test retrieving a specific measurement
     def test_get_measurement_detail(self):
@@ -207,4 +207,4 @@ class MeasurementAPITestCase(APITestCase):
         response = self.client.patch(
             other_measurement_url, data, format='json')
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)

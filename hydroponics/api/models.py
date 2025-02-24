@@ -34,4 +34,3 @@ class Measurement(models.Model):
             f"pH: {self.ph}, Temp: {self.temperature}°C, "
             f"TDS: {self.tds} ppm"
         )
-     
