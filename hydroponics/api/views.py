@@ -1,13 +1,16 @@
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework import status
 from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.filters import OrderingFilter
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
+from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import UserRegisterSerializer, UserSerializer, HydroponicSystemSerializer, MeasurementSerializer
 from .models import HydroponicSystem, Measurement
 from .pagination import MeasurementPagination
+from .filters import MeasurementFilter
 
 
 User = get_user_model()
@@ -111,12 +114,18 @@ class MeasurementView(APIView):
 
     permission_classes = [IsAuthenticated]
     pagination_class = MeasurementPagination
+    filter_backends = [OrderingFilter, DjangoFilterBackend]
+    filterset_class = MeasurementFilter
+    ordering_fields = ['ph', 'temperature', 'tds', 'timestamp']
+    ordering = ['timestamp']
 
     def get_queryset(self, system_id):
         """
         Returns a queryset of measurements that belong to a system owned by the authenticated user.
         """
-        return Measurement.objects.filter(system__id=system_id, system__owner=self.request.user)
+        return Measurement.objects.filter(
+            system__id=system_id, system__owner=self.request.user
+        ).order_by('timestamp')
 
     def get_system(self, system_id):
         """
@@ -137,8 +146,17 @@ class MeasurementView(APIView):
                 self.get_queryset(system_id), id=measurement_id)
             serializer = MeasurementSerializer(measurement)
             return Response(serializer.data, status=status.HTTP_200_OK)
-
+        
         measurements = self.get_queryset(system_id)
+        
+        filterset = MeasurementFilter(request.GET, queryset=measurements)
+        if filterset.is_valid():
+            measurements = filterset.qs
+        
+        ordering = request.GET.get('ordering', 'timestamp')
+        if ordering.lstrip('-') in self.ordering_fields:
+            measurements = measurements.order_by(ordering)
+        
         paginator = self.pagination_class()
         paginated_qs = paginator.paginate_queryset(measurements, request)
         serializer = MeasurementSerializer(paginated_qs, many=True)

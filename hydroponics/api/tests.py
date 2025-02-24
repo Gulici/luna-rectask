@@ -86,17 +86,26 @@ class HydroponicSystemAPITestCase(APITestCase):
 
 
 class MeasurementAPITestCase(APITestCase):
+    """
+    Test case for API endpoints related to measurement management in hydroponic systems.
+    """
 
     def setUp(self):
-        """ Prepare user, system, and authentication token """
+        """
+        Prepares test data:
+        - Creates a user and authenticates them.
+        - Creates a hydroponic system for the user.
+        - Creates an initial measurement.
+        - Stores API URLs for easy access.
+        """
         self.user = User.objects.create_user(
-            username='testuser', password='testpass')
+            username="testuser", password="testpass")
 
         # Authenticate the user
         refresh = RefreshToken.for_user(self.user)
         self.access_token = str(refresh.access_token)
         self.client.credentials(
-            HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
+            HTTP_AUTHORIZATION=f"Bearer {self.access_token}")
 
         # Create a hydroponic system
         self.system = HydroponicSystem.objects.create(
@@ -104,19 +113,18 @@ class MeasurementAPITestCase(APITestCase):
 
         # Create a test measurement
         self.measurement = Measurement.objects.create(
-            system=self.system, ph=6.5, temperature=22.3, tds=800
-        )
+            system=self.system, ph=6.5, temperature=22.3, tds=800)
 
         # API URLs
         self.m_url = f"/api/systems/{self.system.id}/measurements/"
-        self.m_det_url = (
-            f"/api/systems/{self.system.id}/measurements/{self.measurement.id}/"
-        )
+        self.m_det_url = f"/api/systems/{self.system.id}/measurements/{self.measurement.id}/"
 
-    # Test creating a new measurement
     def test_create_measurement(self):
+        """
+        Test creating a new measurement.
+        """
         data = {"ph": 7.0, "temperature": 24.0, "tds": 850}
-        response = self.client.post(self.m_url, data, format='json')
+        response = self.client.post(self.m_url, data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data["ph"], 7.0)
@@ -124,8 +132,10 @@ class MeasurementAPITestCase(APITestCase):
         self.assertEqual(response.data["tds"], 850)
         self.assertEqual(response.data["system"], self.system.id)
 
-    # Test retrieving a list of measurements for a specific system
     def test_get_measurement_list(self):
+        """
+        Test retrieving a paginated list of measurements for a specific system.
+        """
         Measurement.objects.create(
             system=self.system, ph=6.8, temperature=23.5, tds=780)
         Measurement.objects.create(
@@ -134,10 +144,55 @@ class MeasurementAPITestCase(APITestCase):
         response = self.client.get(self.m_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), 3)
+        self.assertEqual(len(response.data["results"]), 3)
 
-    # Test retrieving a specific measurement
+    def test_get_measurement_ordered_list(self):
+        """
+        Test retrieving a list of measurements ordered by pH.
+        """
+        Measurement.objects.create(
+            system=self.system, ph=6.8, temperature=23.5, tds=780)
+        Measurement.objects.create(
+            system=self.system, ph=6.2, temperature=21.0, tds=820)
+
+        response = self.client.get(f"{self.m_url}?ordering=ph")
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data["results"]), 3)
+        self.assertEqual(response.data["results"][0]["ph"], 6.2)
+
+    def test_get_measurement_sorted_list(self):
+        """
+        Test filtering and sorting of measurements using query parameters.
+        """
+        Measurement.objects.create(
+            system=self.system, ph=6.8, temperature=23.5, tds=780)
+        Measurement.objects.create(
+            system=self.system, ph=6.2, temperature=21.0, tds=820)
+
+        test_cases = [
+            {"query": "?ordering=-temperature&ph_min=6.3&ph_max=8.1",
+                "expected_length": 2, "expected_first_temp": 23.5},
+            {"query": "?timestamp_before=2024-12-31", "expected_length": 0},
+            {"query": "?temperature_min=23.0", "expected_length": 1},
+            {"query": "?tds_max=800", "expected_length": 2},
+        ]
+
+        for case in test_cases:
+            with self.subTest(query=case["query"]):
+                response = self.client.get(f"{self.m_url}{case['query']}")
+                self.assertEqual(response.status_code, status.HTTP_200_OK)
+                self.assertEqual(
+                    len(response.data["results"]), case["expected_length"])
+
+                if "expected_first_temp" in case:
+                    self.assertEqual(
+                        response.data["results"][0]["temperature"], case["expected_first_temp"])
+
     def test_get_measurement_detail(self):
+        """
+        Test retrieving a specific measurement by its ID.
+        """
         response = self.client.get(self.m_det_url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -146,65 +201,70 @@ class MeasurementAPITestCase(APITestCase):
                          self.measurement.temperature)
         self.assertEqual(response.data["tds"], self.measurement.tds)
 
-    # Test updating a measurement (PUT)
     def test_update_measurement(self):
+        """
+        Test updating an existing measurement using PUT.
+        """
         data = {"ph": 7.2, "temperature": 25.0, "tds": 900}
-        response = self.client.put(
-            self.m_det_url, data, format='json')
+        response = self.client.put(self.m_det_url, data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["ph"], 7.2)
         self.assertEqual(response.data["temperature"], 25.0)
         self.assertEqual(response.data["tds"], 900)
 
-    # Test partial update of a measurement (PATCH)
     def test_partial_update_measurement(self):
+        """
+        Test partially updating a measurement using PATCH.
+        """
         data = {"ph": 6.9}
-        response = self.client.patch(
-            self.m_det_url, data, format='json')
+        response = self.client.patch(self.m_det_url, data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["ph"], 6.9)  # Updated value
-        # Unchanged value
+        self.assertEqual(response.data["ph"], 6.9)
         self.assertEqual(response.data["temperature"],
                          self.measurement.temperature)
 
-    # Test deleting a measurement
     def test_delete_measurement(self):
-        # before
+        """
+        Test deleting a measurement.
+        """
+        # Ensure measurement exists before deletion
         self.assertTrue(Measurement.objects.filter(
             id=self.measurement.id).exists())
 
         response_del = self.client.delete(self.m_det_url)
         response_get = self.client.get(self.m_det_url)
 
-        # after
+        # Verify measurement was deleted
         self.assertEqual(response_del.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(response_get.status_code, status.HTTP_404_NOT_FOUND)
 
-    # Test unauthorized user cannot create a measurement
     def test_unauthorized_user_create_measurement(self):
+        """
+        Test that an unauthorized user cannot create a measurement.
+        """
         self.client.credentials()  # Disable authentication
         data = {"ph": 7.1, "temperature": 23.0, "tds": 870}
-        response = self.client.post(self.m_url, data, format='json')
+        response = self.client.post(self.m_url, data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    # Test that a user cannot edit a measurement in another user's system
     def test_user_cannot_edit_other_user_measurement(self):
+        """
+        Test that a user cannot edit a measurement from another user's system.
+        """
         other_user = User.objects.create_user(
-            username='otheruser', password='testpass')
+            username="otheruser", password="testpass")
         other_system = HydroponicSystem.objects.create(
             name="Other System", owner=other_user)
         other_measurement = Measurement.objects.create(
             system=other_system, ph=6.0, temperature=20.0, tds=750)
 
         # Attempt to edit another user's measurement
-        other_measurement_url = (
-            f"/api/systems/{other_system.id}/measurements/{other_measurement.id}/"
-        )
+        other_measurement_url = f"/api/systems/{other_system.id}/measurements/{other_measurement.id}/"
         data = {"ph": 7.0}
         response = self.client.patch(
-            other_measurement_url, data, format='json')
+            other_measurement_url, data, format="json")
 
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
