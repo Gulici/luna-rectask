@@ -1,10 +1,11 @@
 import django_filters
-from .models import Measurement
+from .models import Measurement, HydroponicSystem
 
 
 class MeasurementFilter(django_filters.FilterSet):
     """
-    Filter class for measurements, allowing filtering by time range and value ranges.
+    Filter class for measurements,
+    allowing filtering by time range and value ranges.
     """
 
     timestamp_after = django_filters.DateTimeFilter(
@@ -23,3 +24,19 @@ class MeasurementFilter(django_filters.FilterSet):
     class Meta:
         model = Measurement
         fields = ['timestamp', 'ph', 'temperature', 'tds']
+
+
+class HydroponicSystemFilter(django_filters.FilterSet):
+    """
+    Filter class for hydroponic system,
+    allowing filtering by time range.
+    """
+    
+    date_after = django_filters.DateTimeFilter(
+        field_name='created_date', lookup_expr="gte")
+    date_before = django_filters.DateTimeFilter(
+        field_name='created_date', lookup_expr="lte")
+    
+    class Meta: 
+        model  = HydroponicSystem
+        fields = ["created_date"]

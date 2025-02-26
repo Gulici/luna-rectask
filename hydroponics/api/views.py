@@ -10,7 +10,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .serializers import UserRegisterSerializer, UserSerializer, HydroponicSystemSerializer, MeasurementSerializer
 from .models import HydroponicSystem, Measurement
 from .pagination import MeasurementPagination
-from .filters import MeasurementFilter
+from .filters import MeasurementFilter, HydroponicSystemFilter
 
 
 User = get_user_model()
@@ -53,6 +53,16 @@ class UserView(APIView):
 
 class HydroponicsSystemView(APIView):
     permission_classes = [IsAuthenticated]
+    filter_backends = [OrderingFilter, DjangoFilterBackend]
+    filterset_class = HydroponicSystemFilter
+    ordering_fields = ["name", "created_date"]
+    ordering = "created_date"
+    
+    def get_queryset(self, user):
+        """
+        Returns a queryset of measurements that belong to a system owned by the authenticated user.
+        """
+        return HydroponicSystem.objects.filter(owner=user).order_by("created_date")
 
     # create new system and set authenticated user as owner
     def post(self, request):
@@ -70,7 +80,16 @@ class HydroponicsSystemView(APIView):
             serializer = HydroponicSystemSerializer(system)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
-        systems = user.systems.all()
+        systems = self.get_queryset(user)
+        
+        filterset = HydroponicSystemFilter(request.GET, queryset=systems)
+        if filterset.is_valid():
+            systems = filterset.qs
+        
+        ordering = request.GET.get("ordering", "date_create")
+        if ordering.lstrip('-') in self.ordering_fields:
+            systems = systems.order_by(ordering)
+        
         serializer = HydroponicSystemSerializer(systems, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
