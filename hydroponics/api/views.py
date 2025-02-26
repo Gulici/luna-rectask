@@ -17,107 +17,200 @@ User = get_user_model()
 
 
 class RegisterView(APIView):
+    """
+    API endpoint for user registration.
+    Allows anyone to register a new account.
+    Returns the created user along with JWT tokens.
+    """
+
     permission_classes = [AllowAny]
 
     def post(self, request):
+        """
+        Handles user registration.
+        - Validates user input.
+        - Creates a new user.
+        - Returns the user data along with JWT tokens.
+        """
         serializer = UserRegisterSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
             refresh = RefreshToken.for_user(user)
-            return Response({
-                'user': {
-                    'id': user.id,
-                    'username': user.username,
+            return Response(
+                {
+                    "user": {
+                        "id": user.id,
+                        "username": user.username,
+                    },
+                    "refresh": str(refresh),
+                    "access": str(refresh.access_token),
                 },
-                'refresh': str(refresh),
-                'access': str(refresh.access_token),
-            },
-                status=status.HTTP_201_CREATED)
+                status=status.HTTP_201_CREATED,
+            )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class UserView(APIView):
+    """
+    API endpoint for retrieving user data.
+    Allows only authenticated users to access user details.
+    """
+
     permission_classes = [IsAuthenticated]
 
     def get(self, request, user_id=None):
+        """
+        Retrieves user information.
+        - If `user_id` is provided, returns details of a specific user.
+        - Otherwise, returns a list of all users.
+        """
         if user_id:
             user = get_object_or_404(User, id=user_id)
             serializer = UserSerializer(user)
             return Response(serializer.data, status=status.HTTP_200_OK)
 
-        users = User.objects.all()
+        users = User.objects.all().order_by("username")
         serializer = UserSerializer(users, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
+    
 
 class HydroponicsSystemView(APIView):
+    """
+    API endpoint for managing hydroponic systems.
+    Supports filtering and sorting. Paginacja is disabled for system lists.
+    """
+
     permission_classes = [IsAuthenticated]
     filter_backends = [OrderingFilter, DjangoFilterBackend]
     filterset_class = HydroponicSystemFilter
     ordering_fields = ["name", "created_date"]
     ordering = "created_date"
-    
+
     def get_queryset(self, user):
         """
-        Returns a queryset of measurements that belong to a system owned by the authenticated user.
+        Returns a queryset of hydroponic systems owned by the authenticated user.
+        Uses `order_by()` for default sorting.
         """
         return HydroponicSystem.objects.filter(owner=user).order_by("created_date")
 
-    # create new system and set authenticated user as owner
     def post(self, request):
+        """
+        Creates a new hydroponic system and assigns the authenticated user as the owner.
+        """
         serializer = HydroponicSystemSerializer(
-            data=request.data, context={'request': request})
+            data=request.data, context={'request': request}
+        )
         if serializer.is_valid():
             serializer.save(owner=request.user)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def get(self, request, pk=None):
+        """
+        Retrieves hydroponic systems:
+        - If `pk` is provided, returns details of a single system with the last 10 measurements.
+        - Otherwise, returns a list of all systems owned by the user.
+        """
         user = request.user
-        if pk:
-            system = get_object_or_404(HydroponicSystem, id=pk, owner=user)
-            serializer = HydroponicSystemSerializer(system)
-            return Response(serializer.data, status=status.HTTP_200_OK)
 
+        # ✅ Retrieve a single system with eager-loaded measurements
+        if pk:
+            system = get_object_or_404(
+                HydroponicSystem.objects.prefetch_related("measurements"),
+                id=pk,
+                owner=user,
+            )
+
+            last_measurements = list(system.measurements.all().order_by("-timestamp")[:10])
+
+            system_serializer = HydroponicSystemSerializer(system)
+            measurement_serializer = MeasurementSerializer(last_measurements, many=True)
+
+            return Response(
+                {
+                    "system": system_serializer.data,
+                    "last_measurements": measurement_serializer.data,
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        # Retrieve multiple systems
         systems = self.get_queryset(user)
-        
+
+        # Filtering
         filterset = HydroponicSystemFilter(request.GET, queryset=systems)
-        if filterset.is_valid():
-            systems = filterset.qs
-        
-        ordering = request.GET.get("ordering", "date_create")
-        if ordering.lstrip('-') in self.ordering_fields:
-            systems = systems.order_by(ordering)
-        
+        if not filterset.is_valid():
+            return Response(
+                {
+                    "error": "Invalid filtering parameters",
+                    "details": filterset.errors,
+                    "valid_filters": list(HydroponicSystemFilter.Meta.fields),
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        systems = filterset.qs
+
+        # Ordering
+        ordering = request.GET.get("ordering", "created_date")
+        if ordering.lstrip("-") not in self.ordering_fields:
+            return Response(
+                {
+                    "error": f"Invalid ordering field: '{ordering}'",
+                    "valid_ordering_fields": self.ordering_fields,
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        systems = systems.order_by(ordering)
+
+        # Serialize and return the list of systems
         serializer = HydroponicSystemSerializer(systems, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
+        """
+        Updates an existing hydroponic system.
+        The authenticated user must be the owner.
+        """
         user = request.user
         system = get_object_or_404(HydroponicSystem, id=pk, owner=user)
         serializer = HydroponicSystemSerializer(
-            system, data=request.data, context={'request': request})
+            system, data=request.data, context={'request': request}
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def patch(self, request, pk):
+        """
+        Partially updates an existing hydroponic system.
+        The authenticated user must be the owner.
+        """
         user = request.user
         system = get_object_or_404(HydroponicSystem, id=pk, owner=user)
         serializer = HydroponicSystemSerializer(
-            system, data=request.data, partial=True, context={'request': request})
+            system, data=request.data, partial=True, context={'request': request}
+        )
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, requset, pk):
-        user = requset.user
+    def delete(self, request, pk):
+        """
+        Deletes a hydroponic system.
+        The authenticated user must be the owner.
+        """
+        user = request.user
         system = get_object_or_404(HydroponicSystem, id=pk, owner=user)
         system.delete()
-        return Response({'message': f'System id:{pk} deleted succesfully'}, status=status.HTTP_204_NO_CONTENT)
+        return Response(
+            {"message": f"System id:{pk} deleted successfully"},
+            status=status.HTTP_204_NO_CONTENT,
+        )
 
 
 class MeasurementView(APIView):

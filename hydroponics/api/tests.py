@@ -8,27 +8,34 @@ User = get_user_model()
 
 
 class HydroponicSystemAPITestCase(APITestCase):
+    """
+    Test case for API endpoints related to hydroponic system management.
+    """
 
     def setUp(self):
-        # Create a test user
-        self.user = User.objects.create_user(
-            username='testuser', password='testpass')
+        """
+        Prepares test data:
+        - Creates a test user and authenticates them.
+        - Creates a hydroponic system for the user.
+        - Stores the API endpoint for easy access.
+        """
+        self.user = User.objects.create_user(username='testuser', password='testpass')
 
         # Authenticate the user
         refresh = RefreshToken.for_user(self.user)
         self.access_token = str(refresh.access_token)
-        self.client.credentials(
-            HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
+        self.client.credentials(HTTP_AUTHORIZATION=f'Bearer {self.access_token}')
 
         # Create a test hydroponic system
-        self.system = HydroponicSystem.objects.create(
-            name="Test System", owner=self.user)
+        self.system = HydroponicSystem.objects.create(name="Test System", owner=self.user)
 
         # API endpoint
         self.url = "/api/systems/"
 
-    # Test creating new system by authorized user
     def test_create_system(self):
+        """
+        Test creating a new hydroponic system.
+        """
         data_list = [{'name': 'new system'}, {'name': 'another system'}]
 
         response1 = self.client.post(self.url, data_list[0], format='json')
@@ -41,51 +48,65 @@ class HydroponicSystemAPITestCase(APITestCase):
         self.assertEqual(response2.data['name'], 'another system')
         self.assertEqual(response2.data['owner'], self.user.id)
 
-    # Test retrieving all hydroponic systems of user
     def test_get_system_list(self):
+        """
+        Test retrieving a list of hydroponic systems owned by the authenticated user.
+        """
         HydroponicSystem.objects.create(name='System 1', owner=self.user)
         HydroponicSystem.objects.create(name='System 2', owner=self.user)
 
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 3)
-        
+
     def test_get_ordered_systems_list(self):
+        """
+        Test retrieving systems ordered by creation date.
+        """
         HydroponicSystem.objects.create(name='System 1', owner=self.user)
         HydroponicSystem.objects.create(name='System 2', owner=self.user)
-        
-        response = self.client.get(f"{self.url}?ordering=-date_create")
+
+        response = self.client.get(f"{self.url}?ordering=-created_date")
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data[0]["name"], "Test System")
-        self.assertEqual(response.data[2]["name"], "System 2")
-        
+        self.assertEqual(response.data[0]["name"], "System 2")
+        self.assertEqual(response.data[2]["name"], "Test System")
+
     def test_get_sorted_systems_list(self):
+        """
+        Test filtering systems by creation date range.
+        """
         HydroponicSystem.objects.create(name='System 1', owner=self.user)
         HydroponicSystem.objects.create(name='System 2', owner=self.user)
-        
+
         response = self.client.get(f"{self.url}?date_before=2025-12-31&date_after=2024-05-05")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertNotEqual(len(response.data), 0)
 
-    # Test retrieving a specific hydroponic system
     def test_get_system_detail(self):
+        """
+        Test retrieving details of a specific hydroponic system.
+        """
         response = self.client.get(f'{self.url}{self.system.id}/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['name'], self.system.name)
+        self.assertEqual(response.data["system"]["name"], self.system.name)
 
-    # Test updating a hydroponic system with PUT
     def test_update_system(self):
+        """
+        Test updating a hydroponic system using PUT.
+        """
         name_before = self.system.name
         data = {'name': 'Updated name'}
-        response = self.client.put(
-            f'{self.url}{self.system.id}/', data, format='json')
+        response = self.client.put(f'{self.url}{self.system.id}/', data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertNotEqual(response.data['name'], name_before)
         self.assertEqual(response.data['name'], 'Updated name')
 
-    # Test deleting a hydroponic system
     def test_delete_system(self):
+        """
+        Test deleting a hydroponic system.
+        """
         response_del = self.client.delete(f'{self.url}{self.system.id}/')
         response_get_list = self.client.get(self.url)
 
@@ -93,13 +114,16 @@ class HydroponicSystemAPITestCase(APITestCase):
         self.assertEqual(response_get_list.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response_get_list.data), 0)
 
-    # Test unautorized user cannot create a system
     def test_unauthorized_user_create_system(self):
+        """
+        Test that an unauthorized user cannot create a hydroponic system.
+        """
         self.client.credentials()
         data = {'name': 'unauthorized'}
         response = self.client.post(self.url, data, format='json')
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
 
 class MeasurementAPITestCase(APITestCase):
