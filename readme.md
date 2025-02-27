@@ -359,3 +359,187 @@ DELETE /api/systems/{system_id}/
 - `204 No Content` - System successfully deleted
 - `404 Not Found` - System not found or unauthorized access
 
+
+## 3. Measurements
+
+### 3.1 Get All Measurements for a System
+
+```http
+GET /api/systems/{system_id}/measurements/
+```
+
+#### Query Parameters (Optional):
+
+| Parameter          | Type   | Description                                        |
+|-------------------|--------|----------------------------------------------------|
+| `ordering`       | string | Sort by `ph`, `temperature`, `tds`, or `timestamp` |
+| `ph_min`        | float  | Minimum pH value filter                           |
+| `ph_max`        | float  | Maximum pH value filter                           |
+| `temperature_min` | float  | Minimum temperature value filter                  |
+| `temperature_max` | float  | Maximum temperature value filter                  |
+| `tds_min`       | int    | Minimum TDS value filter                          |
+| `tds_max`       | int    | Maximum TDS value filter                          |
+| `timestamp_before` | string | Filter measurements before a specific date (ISO 8601 format) |
+| `timestamp_after`  | string | Filter measurements after a specific date (ISO 8601 format)  |
+
+#### Response:
+
+```json
+{
+    "count": 3,
+    "results": [
+        {
+            "id": 1,
+            "ph": 6.5,
+            "temperature": 22.3,
+            "tds": 800,
+            "timestamp": "2024-03-12T16:30:00Z"
+        },
+        {
+            "id": 2,
+            "ph": 6.8,
+            "temperature": 23.5,
+            "tds": 780,
+            "timestamp": "2024-03-13T10:15:00Z"
+        }
+    ]
+}
+```
+
+##### Possible Status Codes:
+- `200 OK` - Measurements retrieved successfully
+- `404 Not Found` - System not found or unauthorized access
+
+### 3.2 Get Measurement Details
+
+```http
+GET /api/systems/{system_id}/measurements/{measurement_id}/
+```
+
+#### Response:
+
+```json
+{
+    "id": 1,
+    "ph": 6.5,
+    "temperature": 22.3,
+    "tds": 800,
+    "timestamp": "2024-03-12T16:30:00Z"
+}
+```
+
+##### Possible Status Codes:
+- `200 OK` - Measurement retrieved successfully
+- `404 Not Found` - Measurement not found or unauthorized access
+
+### 3.3 Create a New Measurement
+
+```http
+POST /api/systems/{system_id}/measurements/
+```
+
+#### Request Body:
+
+```json
+{
+    "ph": 6.9,
+    "temperature": 24.0,
+    "tds": 850
+}
+```
+
+#### Response:
+
+```json
+{
+    "id": 3,
+    "ph": 6.9,
+    "temperature": 24.0,
+    "tds": 850,
+    "timestamp": "2024-03-14T12:45:00Z"
+}
+```
+
+##### Possible Status Codes:
+- `201 Created` - Measurement successfully created
+- `400 Bad Request` - Invalid input data
+- `403 Forbidden` - User does not have access to the system
+
+### 3.4 Update a Measurement
+
+```http
+PUT /api/systems/{system_id}/measurements/{measurement_id}/
+```
+
+#### Request Body:
+
+```json
+{
+    "ph": 7.0,
+    "temperature": 25.0,
+    "tds": 900
+}
+```
+
+#### Response:
+
+```json
+{
+    "id": 1,
+    "ph": 7.0,
+    "temperature": 25.0,
+    "tds": 900,
+    "timestamp": "2024-03-12T16:30:00Z"
+}
+```
+
+##### Possible Status Codes:
+- `200 OK` - Measurement updated successfully
+- `400 Bad Request` - Invalid input data
+- `403 Forbidden` - User does not have access to the system
+- `404 Not Found` - Measurement not found
+
+### 3.5 Partially Update a Measurement
+
+```http
+PATCH /api/systems/{system_id}/measurements/{measurement_id}/
+```
+
+#### Request Body:
+
+```json
+{
+    "ph": 6.7
+}
+```
+
+#### Response:
+
+```json
+{
+    "id": 1,
+    "ph": 6.7,
+    "temperature": 22.3,
+    "tds": 800,
+    "timestamp": "2024-03-12T16:30:00Z"
+}
+```
+
+##### Possible Status Codes:
+- `200 OK` - Measurement updated successfully
+- `400 Bad Request` - Invalid input data
+- `403 Forbidden` - User does not have access to the system
+- `404 Not Found` - Measurement not found
+
+### 3.6 Delete a Measurement
+
+```http
+DELETE /api/systems/{system_id}/measurements/{measurement_id}/
+```
+
+##### Possible Status Codes:
+- `204 No Content` - Measurement successfully deleted
+- `403 Forbidden` - User does not have access to the system
+- `404 Not Found` - Measurement not found
+
+
