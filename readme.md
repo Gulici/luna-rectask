@@ -1,3 +1,81 @@
+# Hydroponic System API
+
+## Introduction
+Hydroponic System API is a Django-based application that uses PostgreSQL as its database and runs in a Docker environment.
+
+## Prerequisites
+Before starting the installation, ensure you have the following installed:
+
+- [Python 3.10+](https://www.python.org/downloads/)
+- [Docker](https://www.docker.com/get-started)
+- [Docker Compose](https://docs.docker.com/compose/install/)
+- `pip`
+
+## Installation and Setup
+
+### 1. Clone the Repository
+```sh
+git clone https://github.com/Gulici/luna-rectask.git
+cd luna-rectask
+```
+
+### 2. Create and Activate a Virtual Environment
+Since the repository does not include a `venv`, you need to create one manually:
+```sh
+python -m venv venv # Linux/macOS
+py -m venv venv # Windows
+source venv/bin/activate  # Linux/macOS
+venv\Scripts\activate  # Windows
+```
+
+### 3. Install Dependencies
+```sh
+pip install -r requirements.txt
+```
+
+### 4. Start Docker Containers
+Start the PostgreSQL database:
+```sh
+docker-compose up -d
+```
+
+### 5. Configure the Database
+Run migrations:
+```sh
+cd hydroponics
+python manage.py makemigrations
+python manage.py migrate
+```
+
+### 6. Create a Superuser
+```sh
+python manage.py createsuperuser
+```
+
+### 7. Run the Application
+```sh
+python manage.py runserver
+```
+The application will be available at: `http://127.0.0.1:8000/`
+
+## Testing
+To run unit tests:
+```sh
+python manage.py test
+```
+
+## Code documentation
+Code documentation is generated from docstrings using Sphinx.
+
+The documentation is avaiable at `hydroponics/docs/build/html/index.html`.
+
+## Stop and Remove Containers
+```sh
+docker-compose down
+```
+
+<br><br>
+
 # API Documentation: Hydroponic System API
 
 ## Introduction

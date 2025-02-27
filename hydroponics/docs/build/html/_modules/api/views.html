@@ -1,0 +1,481 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>api.views &mdash; HydroponicSystemAPI 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=8d563738"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            HydroponicSystemAPI
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">api package</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">HydroponicSystemAPI</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">api.views</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for api.views</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework</span><span class="w"> </span><span class="kn">import</span> <span class="n">status</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.response</span><span class="w"> </span><span class="kn">import</span> <span class="n">Response</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.views</span><span class="w"> </span><span class="kn">import</span> <span class="n">APIView</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.permissions</span><span class="w"> </span><span class="kn">import</span> <span class="n">AllowAny</span><span class="p">,</span> <span class="n">IsAuthenticated</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">OrderingFilter</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">rest_framework_simplejwt.tokens</span><span class="w"> </span><span class="kn">import</span> <span class="n">RefreshToken</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.shortcuts</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_object_or_404</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django.contrib.auth</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_user_model</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">django_filters.rest_framework</span><span class="w"> </span><span class="kn">import</span> <span class="n">DjangoFilterBackend</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.serializers</span><span class="w"> </span><span class="kn">import</span> <span class="n">UserRegisterSerializer</span><span class="p">,</span> <span class="n">UserSerializer</span><span class="p">,</span> <span class="n">HydroponicSystemSerializer</span><span class="p">,</span> <span class="n">MeasurementSerializer</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">HydroponicSystem</span><span class="p">,</span> <span class="n">Measurement</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.pagination</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementPagination</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.filters</span><span class="w"> </span><span class="kn">import</span> <span class="n">MeasurementFilter</span><span class="p">,</span> <span class="n">HydroponicSystemFilter</span>
+
+
+<span class="n">User</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="RegisterView">
+<a class="viewcode-back" href="../../api.html#api.views.RegisterView">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">RegisterView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    API endpoint for user registration.</span>
+<span class="sd">    Allows anyone to register a new account.</span>
+<span class="sd">    Returns the created user along with JWT tokens.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">AllowAny</span><span class="p">]</span>
+
+<div class="viewcode-block" id="RegisterView.post">
+<a class="viewcode-back" href="../../api.html#api.views.RegisterView.post">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handles user registration.</span>
+<span class="sd">        - Validates user input.</span>
+<span class="sd">        - Creates a new user.</span>
+<span class="sd">        - Returns the user data along with JWT tokens.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">UserRegisterSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="n">refresh</span> <span class="o">=</span> <span class="n">RefreshToken</span><span class="o">.</span><span class="n">for_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;user&quot;</span><span class="p">:</span> <span class="p">{</span>
+                        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                        <span class="s2">&quot;username&quot;</span><span class="p">:</span> <span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+                    <span class="p">},</span>
+                    <span class="s2">&quot;refresh&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">refresh</span><span class="p">),</span>
+                    <span class="s2">&quot;access&quot;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">refresh</span><span class="o">.</span><span class="n">access_token</span><span class="p">),</span>
+                <span class="p">},</span>
+                <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="UserView">
+<a class="viewcode-back" href="../../api.html#api.views.UserView">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">UserView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    API endpoint for retrieving user data.</span>
+<span class="sd">    Allows only authenticated users to access user details.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+
+<div class="viewcode-block" id="UserView.get">
+<a class="viewcode-back" href="../../api.html#api.views.UserView.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">user_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves user information.</span>
+<span class="sd">        - If `user_id` is provided, returns details of a specific user.</span>
+<span class="sd">        - Otherwise, returns a list of all users.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">user_id</span><span class="p">:</span>
+            <span class="n">user</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">User</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">user_id</span><span class="p">)</span>
+            <span class="n">serializer</span> <span class="o">=</span> <span class="n">UserSerializer</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+
+        <span class="n">users</span> <span class="o">=</span> <span class="n">User</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;username&quot;</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">UserSerializer</span><span class="p">(</span><span class="n">users</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+</div>
+
+    
+
+<div class="viewcode-block" id="HydroponicsSystemView">
+<a class="viewcode-back" href="../../api.html#api.views.HydroponicsSystemView">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">HydroponicsSystemView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    API endpoint for managing hydroponic systems.</span>
+<span class="sd">    Supports filtering and sorting. Paginacja is disabled for system lists.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+    <span class="n">filter_backends</span> <span class="o">=</span> <span class="p">[</span><span class="n">OrderingFilter</span><span class="p">,</span> <span class="n">DjangoFilterBackend</span><span class="p">]</span>
+    <span class="n">filterset_class</span> <span class="o">=</span> <span class="n">HydroponicSystemFilter</span>
+    <span class="n">ordering_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;created_date&quot;</span><span class="p">]</span>
+    <span class="n">ordering</span> <span class="o">=</span> <span class="s2">&quot;created_date&quot;</span>
+
+<div class="viewcode-block" id="HydroponicsSystemView.get_queryset">
+<a class="viewcode-back" href="../../api.html#api.views.HydroponicsSystemView.get_queryset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a queryset of hydroponic systems owned by the authenticated user.</span>
+<span class="sd">        Uses `order_by()` for default sorting.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">HydroponicSystem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">owner</span><span class="o">=</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;created_date&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HydroponicsSystemView.post">
+<a class="viewcode-back" href="../../api.html#api.views.HydroponicsSystemView.post">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a new hydroponic system and assigns the authenticated user as the owner.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">HydroponicSystemSerializer</span><span class="p">(</span>
+            <span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;request&#39;</span><span class="p">:</span> <span class="n">request</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">owner</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HydroponicsSystemView.get">
+<a class="viewcode-back" href="../../api.html#api.views.HydroponicsSystemView.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieves hydroponic systems:</span>
+<span class="sd">        - If `pk` is provided, returns details of a single system with the last 10 measurements.</span>
+<span class="sd">        - Otherwise, returns a list of all systems owned by the user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+
+        <span class="c1"># ✅ Retrieve a single system with eager-loaded measurements</span>
+        <span class="k">if</span> <span class="n">pk</span><span class="p">:</span>
+            <span class="n">system</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span>
+                <span class="n">HydroponicSystem</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">prefetch_related</span><span class="p">(</span><span class="s2">&quot;measurements&quot;</span><span class="p">),</span>
+                <span class="nb">id</span><span class="o">=</span><span class="n">pk</span><span class="p">,</span>
+                <span class="n">owner</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+            <span class="p">)</span>
+
+            <span class="n">last_measurements</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">system</span><span class="o">.</span><span class="n">measurements</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s2">&quot;-timestamp&quot;</span><span class="p">)[:</span><span class="mi">10</span><span class="p">])</span>
+
+            <span class="n">system_serializer</span> <span class="o">=</span> <span class="n">HydroponicSystemSerializer</span><span class="p">(</span><span class="n">system</span><span class="p">)</span>
+            <span class="n">measurement_serializer</span> <span class="o">=</span> <span class="n">MeasurementSerializer</span><span class="p">(</span><span class="n">last_measurements</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="n">system_serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                    <span class="s2">&quot;last_measurements&quot;</span><span class="p">:</span> <span class="n">measurement_serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Retrieve multiple systems</span>
+        <span class="n">systems</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+
+        <span class="c1"># Filtering</span>
+        <span class="n">filterset</span> <span class="o">=</span> <span class="n">HydroponicSystemFilter</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">systems</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">filterset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="s2">&quot;Invalid filtering parameters&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;details&quot;</span><span class="p">:</span> <span class="n">filterset</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span>
+                    <span class="s2">&quot;valid_filters&quot;</span><span class="p">:</span> <span class="nb">list</span><span class="p">(</span><span class="n">HydroponicSystemFilter</span><span class="o">.</span><span class="n">Meta</span><span class="o">.</span><span class="n">fields</span><span class="p">),</span>
+                <span class="p">},</span>
+                <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">systems</span> <span class="o">=</span> <span class="n">filterset</span><span class="o">.</span><span class="n">qs</span>
+
+        <span class="c1"># Ordering</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ordering&quot;</span><span class="p">,</span> <span class="s2">&quot;created_date&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ordering</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ordering_fields</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+                <span class="p">{</span>
+                    <span class="s2">&quot;error&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;Invalid ordering field: &#39;</span><span class="si">{</span><span class="n">ordering</span><span class="si">}</span><span class="s2">&#39;&quot;</span><span class="p">,</span>
+                    <span class="s2">&quot;valid_ordering_fields&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">ordering_fields</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">,</span>
+            <span class="p">)</span>
+
+        <span class="n">systems</span> <span class="o">=</span> <span class="n">systems</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">ordering</span><span class="p">)</span>
+
+        <span class="c1"># Serialize and return the list of systems</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">HydroponicSystemSerializer</span><span class="p">(</span><span class="n">systems</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HydroponicsSystemView.put">
+<a class="viewcode-back" href="../../api.html#api.views.HydroponicsSystemView.put">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates an existing hydroponic system.</span>
+<span class="sd">        The authenticated user must be the owner.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">system</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">HydroponicSystem</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">pk</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">HydroponicSystemSerializer</span><span class="p">(</span>
+            <span class="n">system</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;request&#39;</span><span class="p">:</span> <span class="n">request</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HydroponicsSystemView.patch">
+<a class="viewcode-back" href="../../api.html#api.views.HydroponicsSystemView.patch">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">patch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Partially updates an existing hydroponic system.</span>
+<span class="sd">        The authenticated user must be the owner.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">system</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">HydroponicSystem</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">pk</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">HydroponicSystemSerializer</span><span class="p">(</span>
+            <span class="n">system</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;request&#39;</span><span class="p">:</span> <span class="n">request</span><span class="p">}</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="HydroponicsSystemView.delete">
+<a class="viewcode-back" href="../../api.html#api.views.HydroponicsSystemView.delete">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">pk</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Deletes a hydroponic system.</span>
+<span class="sd">        The authenticated user must be the owner.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="n">system</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">HydroponicSystem</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">pk</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">system</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span>
+            <span class="p">{</span><span class="s2">&quot;message&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;System id:</span><span class="si">{</span><span class="n">pk</span><span class="si">}</span><span class="s2"> deleted successfully&quot;</span><span class="p">},</span>
+            <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">,</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="MeasurementView">
+<a class="viewcode-back" href="../../api.html#api.views.MeasurementView">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MeasurementView</span><span class="p">(</span><span class="n">APIView</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    API endpoint for managing measurements in a hydroponic system.</span>
+
+<span class="sd">    Supported HTTP methods:</span>
+<span class="sd">    - GET: Retrieve one or all measurements with pagination.</span>
+<span class="sd">    - POST: Create a new measurement.</span>
+<span class="sd">    - PUT/PATCH: Update a specific measurement.</span>
+<span class="sd">    - DELETE: Delete a specific measurement.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">permission_classes</span> <span class="o">=</span> <span class="p">[</span><span class="n">IsAuthenticated</span><span class="p">]</span>
+    <span class="n">pagination_class</span> <span class="o">=</span> <span class="n">MeasurementPagination</span>
+    <span class="n">filter_backends</span> <span class="o">=</span> <span class="p">[</span><span class="n">OrderingFilter</span><span class="p">,</span> <span class="n">DjangoFilterBackend</span><span class="p">]</span>
+    <span class="n">filterset_class</span> <span class="o">=</span> <span class="n">MeasurementFilter</span>
+    <span class="n">ordering_fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ph&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;tds&#39;</span><span class="p">,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">]</span>
+    <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;timestamp&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="MeasurementView.get_queryset">
+<a class="viewcode-back" href="../../api.html#api.views.MeasurementView.get_queryset">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a queryset of measurements that belong to a system owned by the authenticated user.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">Measurement</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span>
+            <span class="n">system__id</span><span class="o">=</span><span class="n">system_id</span><span class="p">,</span> <span class="n">system__owner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;timestamp&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MeasurementView.get_system">
+<a class="viewcode-back" href="../../api.html#api.views.MeasurementView.get_system">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_system</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">system_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns the HydroponicSystem if it belongs to the authenticated user, otherwise raises 404.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">get_object_or_404</span><span class="p">(</span><span class="n">HydroponicSystem</span><span class="p">,</span> <span class="nb">id</span><span class="o">=</span><span class="n">system_id</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">user</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MeasurementView.get">
+<a class="viewcode-back" href="../../api.html#api.views.MeasurementView.get">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">system_id</span><span class="p">,</span> <span class="n">measurement_id</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve measurements.</span>
+<span class="sd">        - If `measurement_id` is provided, returns a single measurement.</span>
+<span class="sd">        - Otherwise, returns a paginated list of all measurements for the system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_system</span><span class="p">(</span><span class="n">system_id</span><span class="p">)</span>  <span class="c1"># Ensure system belongs to user</span>
+
+        <span class="k">if</span> <span class="n">measurement_id</span><span class="p">:</span>
+            <span class="n">measurement</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">(</span><span class="n">system_id</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="n">measurement_id</span><span class="p">)</span>
+            <span class="n">serializer</span> <span class="o">=</span> <span class="n">MeasurementSerializer</span><span class="p">(</span><span class="n">measurement</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        
+        <span class="n">measurements</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">(</span><span class="n">system_id</span><span class="p">)</span>
+        
+        <span class="n">filterset</span> <span class="o">=</span> <span class="n">MeasurementFilter</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="p">,</span> <span class="n">queryset</span><span class="o">=</span><span class="n">measurements</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">filterset</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">measurements</span> <span class="o">=</span> <span class="n">filterset</span><span class="o">.</span><span class="n">qs</span>
+        
+        <span class="n">ordering</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">GET</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;ordering&#39;</span><span class="p">,</span> <span class="s1">&#39;timestamp&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ordering</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s1">&#39;-&#39;</span><span class="p">)</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ordering_fields</span><span class="p">:</span>
+            <span class="n">measurements</span> <span class="o">=</span> <span class="n">measurements</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="n">ordering</span><span class="p">)</span>
+        
+        <span class="n">paginator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pagination_class</span><span class="p">()</span>
+        <span class="n">paginated_qs</span> <span class="o">=</span> <span class="n">paginator</span><span class="o">.</span><span class="n">paginate_queryset</span><span class="p">(</span><span class="n">measurements</span><span class="p">,</span> <span class="n">request</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">MeasurementSerializer</span><span class="p">(</span><span class="n">paginated_qs</span><span class="p">,</span> <span class="n">many</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">paginator</span><span class="o">.</span><span class="n">get_paginated_response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MeasurementView.post">
+<a class="viewcode-back" href="../../api.html#api.views.MeasurementView.post">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">system_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new measurement in the specified system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">system</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_system</span><span class="p">(</span><span class="n">system_id</span><span class="p">)</span>  <span class="c1"># Ensure system belongs to user</span>
+
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">MeasurementSerializer</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">system</span><span class="o">=</span><span class="n">system</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_201_CREATED</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MeasurementView.put">
+<a class="viewcode-back" href="../../api.html#api.views.MeasurementView.put">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">put</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">system_id</span><span class="p">,</span> <span class="n">measurement_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Fully update a specific measurement.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">measurement</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">(</span><span class="n">system_id</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="n">measurement_id</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">MeasurementSerializer</span><span class="p">(</span><span class="n">measurement</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MeasurementView.patch">
+<a class="viewcode-back" href="../../api.html#api.views.MeasurementView.patch">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">patch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">system_id</span><span class="p">,</span> <span class="n">measurement_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Partially update a specific measurement.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">measurement</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">(</span><span class="n">system_id</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="n">measurement_id</span><span class="p">)</span>
+        <span class="n">serializer</span> <span class="o">=</span> <span class="n">MeasurementSerializer</span><span class="p">(</span>
+            <span class="n">measurement</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">request</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">partial</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">serializer</span><span class="o">.</span><span class="n">is_valid</span><span class="p">():</span>
+            <span class="n">serializer</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_200_OK</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">(</span><span class="n">serializer</span><span class="o">.</span><span class="n">errors</span><span class="p">,</span> <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_400_BAD_REQUEST</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="MeasurementView.delete">
+<a class="viewcode-back" href="../../api.html#api.views.MeasurementView.delete">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">system_id</span><span class="p">,</span> <span class="n">measurement_id</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Delete a specific measurement.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">measurement</span> <span class="o">=</span> <span class="n">get_object_or_404</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">(</span><span class="n">system_id</span><span class="p">),</span> <span class="nb">id</span><span class="o">=</span><span class="n">measurement_id</span><span class="p">)</span>
+        <span class="n">measurement</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">Response</span><span class="p">({</span><span class="s1">&#39;message&#39;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;Measurement id:</span><span class="si">{</span><span class="n">measurement_id</span><span class="si">}</span><span class="s1"> deleted successfully&#39;</span><span class="p">},</span>
+                        <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="o">.</span><span class="n">HTTP_204_NO_CONTENT</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Krzysztof Czerniachowicz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,1283 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>api package &mdash; HydroponicSystemAPI 1.0.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=8d563738"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="api.migrations package" href="api.migrations.html" />
+    <link rel="prev" title="HydroponicSystemAPI documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            HydroponicSystemAPI
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">api package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.migrations.html">api.migrations package</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-api.admin">api.admin module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-api.apps">api.apps module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#api.apps.ApiConfig"><code class="docutils literal notranslate"><span class="pre">ApiConfig</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.apps.ApiConfig.default_auto_field"><code class="docutils literal notranslate"><span class="pre">ApiConfig.default_auto_field</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.apps.ApiConfig.name"><code class="docutils literal notranslate"><span class="pre">ApiConfig.name</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-api.filters">api.filters module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#api.filters.HydroponicSystemFilter"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemFilter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.filters.HydroponicSystemFilter.Meta"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemFilter.Meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.filters.HydroponicSystemFilter.base_filters"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemFilter.base_filters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.filters.HydroponicSystemFilter.declared_filters"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemFilter.declared_filters</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api.filters.MeasurementFilter"><code class="docutils literal notranslate"><span class="pre">MeasurementFilter</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.filters.MeasurementFilter.Meta"><code class="docutils literal notranslate"><span class="pre">MeasurementFilter.Meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.filters.MeasurementFilter.base_filters"><code class="docutils literal notranslate"><span class="pre">MeasurementFilter.base_filters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.filters.MeasurementFilter.declared_filters"><code class="docutils literal notranslate"><span class="pre">MeasurementFilter.declared_filters</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-api.models">api.models module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#api.models.HydroponicSystem"><code class="docutils literal notranslate"><span class="pre">HydroponicSystem</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.HydroponicSystem.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">HydroponicSystem.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.HydroponicSystem.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">HydroponicSystem.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.HydroponicSystem.created_date"><code class="docutils literal notranslate"><span class="pre">HydroponicSystem.created_date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.HydroponicSystem.get_next_by_created_date"><code class="docutils literal notranslate"><span class="pre">HydroponicSystem.get_next_by_created_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.HydroponicSystem.get_previous_by_created_date"><code class="docutils literal notranslate"><span class="pre">HydroponicSystem.get_previous_by_created_date()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.HydroponicSystem.id"><code class="docutils literal notranslate"><span class="pre">HydroponicSystem.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.HydroponicSystem.measurements"><code class="docutils literal notranslate"><span class="pre">HydroponicSystem.measurements</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.HydroponicSystem.name"><code class="docutils literal notranslate"><span class="pre">HydroponicSystem.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.HydroponicSystem.objects"><code class="docutils literal notranslate"><span class="pre">HydroponicSystem.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.HydroponicSystem.owner"><code class="docutils literal notranslate"><span class="pre">HydroponicSystem.owner</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.HydroponicSystem.owner_id"><code class="docutils literal notranslate"><span class="pre">HydroponicSystem.owner_id</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api.models.Measurement"><code class="docutils literal notranslate"><span class="pre">Measurement</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.Measurement.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">Measurement.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.Measurement.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">Measurement.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.Measurement.get_next_by_timestamp"><code class="docutils literal notranslate"><span class="pre">Measurement.get_next_by_timestamp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.Measurement.get_previous_by_timestamp"><code class="docutils literal notranslate"><span class="pre">Measurement.get_previous_by_timestamp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.Measurement.id"><code class="docutils literal notranslate"><span class="pre">Measurement.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.Measurement.objects"><code class="docutils literal notranslate"><span class="pre">Measurement.objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.Measurement.ph"><code class="docutils literal notranslate"><span class="pre">Measurement.ph</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.Measurement.system"><code class="docutils literal notranslate"><span class="pre">Measurement.system</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.Measurement.system_id"><code class="docutils literal notranslate"><span class="pre">Measurement.system_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.Measurement.tds"><code class="docutils literal notranslate"><span class="pre">Measurement.tds</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.Measurement.temperature"><code class="docutils literal notranslate"><span class="pre">Measurement.temperature</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.Measurement.timestamp"><code class="docutils literal notranslate"><span class="pre">Measurement.timestamp</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api.models.User"><code class="docutils literal notranslate"><span class="pre">User</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.DoesNotExist"><code class="docutils literal notranslate"><span class="pre">User.DoesNotExist</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.MultipleObjectsReturned"><code class="docutils literal notranslate"><span class="pre">User.MultipleObjectsReturned</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.date_joined"><code class="docutils literal notranslate"><span class="pre">User.date_joined</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.email"><code class="docutils literal notranslate"><span class="pre">User.email</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.first_name"><code class="docutils literal notranslate"><span class="pre">User.first_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.get_next_by_date_joined"><code class="docutils literal notranslate"><span class="pre">User.get_next_by_date_joined()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.get_previous_by_date_joined"><code class="docutils literal notranslate"><span class="pre">User.get_previous_by_date_joined()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.groups"><code class="docutils literal notranslate"><span class="pre">User.groups</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.id"><code class="docutils literal notranslate"><span class="pre">User.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.is_active"><code class="docutils literal notranslate"><span class="pre">User.is_active</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.is_staff"><code class="docutils literal notranslate"><span class="pre">User.is_staff</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.is_superuser"><code class="docutils literal notranslate"><span class="pre">User.is_superuser</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.last_login"><code class="docutils literal notranslate"><span class="pre">User.last_login</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.last_name"><code class="docutils literal notranslate"><span class="pre">User.last_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.logentry_set"><code class="docutils literal notranslate"><span class="pre">User.logentry_set</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.password"><code class="docutils literal notranslate"><span class="pre">User.password</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.systems"><code class="docutils literal notranslate"><span class="pre">User.systems</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.user_permissions"><code class="docutils literal notranslate"><span class="pre">User.user_permissions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.models.User.username"><code class="docutils literal notranslate"><span class="pre">User.username</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-api.pagination">api.pagination module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#api.pagination.MeasurementPagination"><code class="docutils literal notranslate"><span class="pre">MeasurementPagination</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.pagination.MeasurementPagination.max_page_size"><code class="docutils literal notranslate"><span class="pre">MeasurementPagination.max_page_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.pagination.MeasurementPagination.page_size"><code class="docutils literal notranslate"><span class="pre">MeasurementPagination.page_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.pagination.MeasurementPagination.page_size_query_param"><code class="docutils literal notranslate"><span class="pre">MeasurementPagination.page_size_query_param</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-api.serializers">api.serializers module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#api.serializers.HydroponicSystemSerializer"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemSerializer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.serializers.HydroponicSystemSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemSerializer.Meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.serializers.HydroponicSystemSerializer.create"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemSerializer.create()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api.serializers.MeasurementSerializer"><code class="docutils literal notranslate"><span class="pre">MeasurementSerializer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.serializers.MeasurementSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">MeasurementSerializer.Meta</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api.serializers.UserRegisterSerializer"><code class="docutils literal notranslate"><span class="pre">UserRegisterSerializer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.serializers.UserRegisterSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">UserRegisterSerializer.Meta</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.serializers.UserRegisterSerializer.create"><code class="docutils literal notranslate"><span class="pre">UserRegisterSerializer.create()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api.serializers.UserSerializer"><code class="docutils literal notranslate"><span class="pre">UserSerializer</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.serializers.UserSerializer.Meta"><code class="docutils literal notranslate"><span class="pre">UserSerializer.Meta</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-api.tests">api.tests module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#api.tests.HydroponicSystemAPITestCase"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemAPITestCase</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.HydroponicSystemAPITestCase.setUp"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemAPITestCase.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.HydroponicSystemAPITestCase.test_create_system"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemAPITestCase.test_create_system()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.HydroponicSystemAPITestCase.test_delete_system"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemAPITestCase.test_delete_system()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.HydroponicSystemAPITestCase.test_get_ordered_systems_list"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemAPITestCase.test_get_ordered_systems_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.HydroponicSystemAPITestCase.test_get_sorted_systems_list"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemAPITestCase.test_get_sorted_systems_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.HydroponicSystemAPITestCase.test_get_system_detail"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemAPITestCase.test_get_system_detail()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.HydroponicSystemAPITestCase.test_get_system_list"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemAPITestCase.test_get_system_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.HydroponicSystemAPITestCase.test_unauthorized_user_create_system"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemAPITestCase.test_unauthorized_user_create_system()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.HydroponicSystemAPITestCase.test_update_system"><code class="docutils literal notranslate"><span class="pre">HydroponicSystemAPITestCase.test_update_system()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api.tests.MeasurementAPITestCase"><code class="docutils literal notranslate"><span class="pre">MeasurementAPITestCase</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.MeasurementAPITestCase.setUp"><code class="docutils literal notranslate"><span class="pre">MeasurementAPITestCase.setUp()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.MeasurementAPITestCase.test_create_measurement"><code class="docutils literal notranslate"><span class="pre">MeasurementAPITestCase.test_create_measurement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.MeasurementAPITestCase.test_delete_measurement"><code class="docutils literal notranslate"><span class="pre">MeasurementAPITestCase.test_delete_measurement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.MeasurementAPITestCase.test_get_measurement_detail"><code class="docutils literal notranslate"><span class="pre">MeasurementAPITestCase.test_get_measurement_detail()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.MeasurementAPITestCase.test_get_measurement_list"><code class="docutils literal notranslate"><span class="pre">MeasurementAPITestCase.test_get_measurement_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.MeasurementAPITestCase.test_get_measurement_ordered_list"><code class="docutils literal notranslate"><span class="pre">MeasurementAPITestCase.test_get_measurement_ordered_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.MeasurementAPITestCase.test_get_measurement_sorted_list"><code class="docutils literal notranslate"><span class="pre">MeasurementAPITestCase.test_get_measurement_sorted_list()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.MeasurementAPITestCase.test_partial_update_measurement"><code class="docutils literal notranslate"><span class="pre">MeasurementAPITestCase.test_partial_update_measurement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.MeasurementAPITestCase.test_unauthorized_user_create_measurement"><code class="docutils literal notranslate"><span class="pre">MeasurementAPITestCase.test_unauthorized_user_create_measurement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.MeasurementAPITestCase.test_update_measurement"><code class="docutils literal notranslate"><span class="pre">MeasurementAPITestCase.test_update_measurement()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.tests.MeasurementAPITestCase.test_user_cannot_edit_other_user_measurement"><code class="docutils literal notranslate"><span class="pre">MeasurementAPITestCase.test_user_cannot_edit_other_user_measurement()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-api.urls">api.urls module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-api.views">api.views module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#api.views.HydroponicsSystemView"><code class="docutils literal notranslate"><span class="pre">HydroponicsSystemView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.HydroponicsSystemView.delete"><code class="docutils literal notranslate"><span class="pre">HydroponicsSystemView.delete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.HydroponicsSystemView.filter_backends"><code class="docutils literal notranslate"><span class="pre">HydroponicsSystemView.filter_backends</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.HydroponicsSystemView.filterset_class"><code class="docutils literal notranslate"><span class="pre">HydroponicsSystemView.filterset_class</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.HydroponicsSystemView.get"><code class="docutils literal notranslate"><span class="pre">HydroponicsSystemView.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.HydroponicsSystemView.get_queryset"><code class="docutils literal notranslate"><span class="pre">HydroponicsSystemView.get_queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.HydroponicsSystemView.ordering"><code class="docutils literal notranslate"><span class="pre">HydroponicsSystemView.ordering</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.HydroponicsSystemView.ordering_fields"><code class="docutils literal notranslate"><span class="pre">HydroponicsSystemView.ordering_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.HydroponicsSystemView.patch"><code class="docutils literal notranslate"><span class="pre">HydroponicsSystemView.patch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.HydroponicsSystemView.permission_classes"><code class="docutils literal notranslate"><span class="pre">HydroponicsSystemView.permission_classes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.HydroponicsSystemView.post"><code class="docutils literal notranslate"><span class="pre">HydroponicsSystemView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.HydroponicsSystemView.put"><code class="docutils literal notranslate"><span class="pre">HydroponicsSystemView.put()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api.views.MeasurementView"><code class="docutils literal notranslate"><span class="pre">MeasurementView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.MeasurementView.delete"><code class="docutils literal notranslate"><span class="pre">MeasurementView.delete()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.MeasurementView.filter_backends"><code class="docutils literal notranslate"><span class="pre">MeasurementView.filter_backends</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.MeasurementView.filterset_class"><code class="docutils literal notranslate"><span class="pre">MeasurementView.filterset_class</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.MeasurementView.get"><code class="docutils literal notranslate"><span class="pre">MeasurementView.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.MeasurementView.get_queryset"><code class="docutils literal notranslate"><span class="pre">MeasurementView.get_queryset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.MeasurementView.get_system"><code class="docutils literal notranslate"><span class="pre">MeasurementView.get_system()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.MeasurementView.ordering"><code class="docutils literal notranslate"><span class="pre">MeasurementView.ordering</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.MeasurementView.ordering_fields"><code class="docutils literal notranslate"><span class="pre">MeasurementView.ordering_fields</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.MeasurementView.pagination_class"><code class="docutils literal notranslate"><span class="pre">MeasurementView.pagination_class</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.MeasurementView.patch"><code class="docutils literal notranslate"><span class="pre">MeasurementView.patch()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.MeasurementView.permission_classes"><code class="docutils literal notranslate"><span class="pre">MeasurementView.permission_classes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.MeasurementView.post"><code class="docutils literal notranslate"><span class="pre">MeasurementView.post()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.MeasurementView.put"><code class="docutils literal notranslate"><span class="pre">MeasurementView.put()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api.views.RegisterView"><code class="docutils literal notranslate"><span class="pre">RegisterView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.RegisterView.permission_classes"><code class="docutils literal notranslate"><span class="pre">RegisterView.permission_classes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.RegisterView.post"><code class="docutils literal notranslate"><span class="pre">RegisterView.post()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#api.views.UserView"><code class="docutils literal notranslate"><span class="pre">UserView</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.UserView.get"><code class="docutils literal notranslate"><span class="pre">UserView.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#api.views.UserView.permission_classes"><code class="docutils literal notranslate"><span class="pre">UserView.permission_classes</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#module-api">Module contents</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">HydroponicSystemAPI</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">api package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-package">
+<h1>api package<a class="headerlink" href="#api-package" title="Link to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Link to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="api.migrations.html">api.migrations package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="api.migrations.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="api.migrations.html#module-api.migrations.0001_initial">api.migrations.0001_initial module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="api.migrations.html#api.migrations.0001_initial.Migration"><code class="docutils literal notranslate"><span class="pre">Migration</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="api.migrations.html#api.migrations.0001_initial.Migration.dependencies"><code class="docutils literal notranslate"><span class="pre">Migration.dependencies</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.migrations.html#api.migrations.0001_initial.Migration.initial"><code class="docutils literal notranslate"><span class="pre">Migration.initial</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="api.migrations.html#api.migrations.0001_initial.Migration.operations"><code class="docutils literal notranslate"><span class="pre">Migration.operations</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="api.migrations.html#module-api.migrations">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading"></a></h2>
+</section>
+<section id="module-api.admin">
+<span id="api-admin-module"></span><h2>api.admin module<a class="headerlink" href="#module-api.admin" title="Link to this heading"></a></h2>
+</section>
+<section id="module-api.apps">
+<span id="api-apps-module"></span><h2>api.apps module<a class="headerlink" href="#module-api.apps" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="api.apps.ApiConfig">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.apps.</span></span><span class="sig-name descname"><span class="pre">ApiConfig</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">app_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_module</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/apps.html#ApiConfig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.apps.ApiConfig" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AppConfig</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.apps.ApiConfig.default_auto_field">
+<span class="sig-name descname"><span class="pre">default_auto_field</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'django.db.models.BigAutoField'</span></em><a class="headerlink" href="#api.apps.ApiConfig.default_auto_field" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.apps.ApiConfig.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'api'</span></em><a class="headerlink" href="#api.apps.ApiConfig.name" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-api.filters">
+<span id="api-filters-module"></span><h2>api.filters module<a class="headerlink" href="#module-api.filters" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="api.filters.HydroponicSystemFilter">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.filters.</span></span><span class="sig-name descname"><span class="pre">HydroponicSystemFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/filters.html#HydroponicSystemFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.filters.HydroponicSystemFilter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">FilterSet</span></code></p>
+<p>Filter class for hydroponic system,
+allowing filtering by time range.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="api.filters.HydroponicSystemFilter.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/api/filters.html#HydroponicSystemFilter.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.filters.HydroponicSystemFilter.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.filters.HydroponicSystemFilter.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['created_date']</span></em><a class="headerlink" href="#api.filters.HydroponicSystemFilter.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.filters.HydroponicSystemFilter.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#api.filters.HydroponicSystemFilter.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#api.models.HydroponicSystem" title="api.models.HydroponicSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">HydroponicSystem</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.filters.HydroponicSystemFilter.base_filters">
+<span class="sig-name descname"><span class="pre">base_filters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'created_date':</span> <span class="pre">&lt;django_filters.filters.DateTimeFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'date_after':</span> <span class="pre">&lt;django_filters.filters.DateTimeFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'date_before':</span> <span class="pre">&lt;django_filters.filters.DateTimeFilter</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#api.filters.HydroponicSystemFilter.base_filters" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.filters.HydroponicSystemFilter.declared_filters">
+<span class="sig-name descname"><span class="pre">declared_filters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'date_after':</span> <span class="pre">&lt;django_filters.filters.DateTimeFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'date_before':</span> <span class="pre">&lt;django_filters.filters.DateTimeFilter</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#api.filters.HydroponicSystemFilter.declared_filters" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="api.filters.MeasurementFilter">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.filters.</span></span><span class="sig-name descname"><span class="pre">MeasurementFilter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">queryset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">request</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/filters.html#MeasurementFilter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.filters.MeasurementFilter" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">FilterSet</span></code></p>
+<p>Filter class for measurements,
+allowing filtering by time range and value ranges.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="api.filters.MeasurementFilter.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/api/filters.html#MeasurementFilter.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.filters.MeasurementFilter.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.filters.MeasurementFilter.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['timestamp',</span> <span class="pre">'ph',</span> <span class="pre">'temperature',</span> <span class="pre">'tds']</span></em><a class="headerlink" href="#api.filters.MeasurementFilter.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.filters.MeasurementFilter.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#api.filters.MeasurementFilter.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#api.models.Measurement" title="api.models.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.filters.MeasurementFilter.base_filters">
+<span class="sig-name descname"><span class="pre">base_filters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'ph':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'ph_max':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'ph_min':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'tds':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'tds_max':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'tds_min':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'temperature':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'temperature_max':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'temperature_min':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'timestamp':</span> <span class="pre">&lt;django_filters.filters.DateTimeFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'timestamp_after':</span> <span class="pre">&lt;django_filters.filters.DateTimeFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'timestamp_before':</span> <span class="pre">&lt;django_filters.filters.DateTimeFilter</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#api.filters.MeasurementFilter.base_filters" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.filters.MeasurementFilter.declared_filters">
+<span class="sig-name descname"><span class="pre">declared_filters</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'ph_max':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'ph_min':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'tds_max':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'tds_min':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'temperature_max':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'temperature_min':</span> <span class="pre">&lt;django_filters.filters.NumberFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'timestamp_after':</span> <span class="pre">&lt;django_filters.filters.DateTimeFilter</span> <span class="pre">object&gt;,</span> <span class="pre">'timestamp_before':</span> <span class="pre">&lt;django_filters.filters.DateTimeFilter</span> <span class="pre">object&gt;}</span></em><a class="headerlink" href="#api.filters.MeasurementFilter.declared_filters" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-api.models">
+<span id="api-models-module"></span><h2>api.models module<a class="headerlink" href="#module-api.models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="api.models.HydroponicSystem">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.models.</span></span><span class="sig-name descname"><span class="pre">HydroponicSystem</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/models.html#HydroponicSystem"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.models.HydroponicSystem" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Model representing a hydroponic system owned by a user.
+Each system is uniquely associated with a user.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="api.models.HydroponicSystem.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#api.models.HydroponicSystem.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="api.models.HydroponicSystem.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#api.models.HydroponicSystem.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.HydroponicSystem.created_date">
+<span class="sig-name descname"><span class="pre">created_date</span></span><a class="headerlink" href="#api.models.HydroponicSystem.created_date" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.models.HydroponicSystem.get_next_by_created_date">
+<span class="sig-name descname"><span class="pre">get_next_by_created_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_date&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#api.models.HydroponicSystem.get_next_by_created_date" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.models.HydroponicSystem.get_previous_by_created_date">
+<span class="sig-name descname"><span class="pre">get_previous_by_created_date</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">created_date&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#api.models.HydroponicSystem.get_previous_by_created_date" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.HydroponicSystem.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#api.models.HydroponicSystem.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.HydroponicSystem.measurements">
+<span class="sig-name descname"><span class="pre">measurements</span></span><a class="headerlink" href="#api.models.HydroponicSystem.measurements" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.HydroponicSystem.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#api.models.HydroponicSystem.name" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.HydroponicSystem.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#api.models.HydroponicSystem.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.HydroponicSystem.owner">
+<span class="sig-name descname"><span class="pre">owner</span></span><a class="headerlink" href="#api.models.HydroponicSystem.owner" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.HydroponicSystem.owner_id">
+<span class="sig-name descname"><span class="pre">owner_id</span></span><a class="headerlink" href="#api.models.HydroponicSystem.owner_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="api.models.Measurement">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.models.</span></span><span class="sig-name descname"><span class="pre">Measurement</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/models.html#Measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.models.Measurement" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Model</span></code></p>
+<p>Model representing a measurement recorded for a hydroponic system.
+Each measurement contains pH, temperature, and TDS (Total Dissolved Solids).</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="api.models.Measurement.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#api.models.Measurement.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="api.models.Measurement.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#api.models.Measurement.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.models.Measurement.get_next_by_timestamp">
+<span class="sig-name descname"><span class="pre">get_next_by_timestamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#api.models.Measurement.get_next_by_timestamp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.models.Measurement.get_previous_by_timestamp">
+<span class="sig-name descname"><span class="pre">get_previous_by_timestamp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">timestamp&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#api.models.Measurement.get_previous_by_timestamp" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.Measurement.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#api.models.Measurement.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.Measurement.objects">
+<span class="sig-name descname"><span class="pre">objects</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;django.db.models.manager.Manager</span> <span class="pre">object&gt;</span></em><a class="headerlink" href="#api.models.Measurement.objects" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.Measurement.ph">
+<span class="sig-name descname"><span class="pre">ph</span></span><a class="headerlink" href="#api.models.Measurement.ph" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.Measurement.system">
+<span class="sig-name descname"><span class="pre">system</span></span><a class="headerlink" href="#api.models.Measurement.system" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related object on the forward side of a many-to-one or
+one-to-one (via ForwardOneToOneDescriptor subclass) relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Child.parent</span></code> is a <code class="docutils literal notranslate"><span class="pre">ForwardManyToOneDescriptor</span></code> instance.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.Measurement.system_id">
+<span class="sig-name descname"><span class="pre">system_id</span></span><a class="headerlink" href="#api.models.Measurement.system_id" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.Measurement.tds">
+<span class="sig-name descname"><span class="pre">tds</span></span><a class="headerlink" href="#api.models.Measurement.tds" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.Measurement.temperature">
+<span class="sig-name descname"><span class="pre">temperature</span></span><a class="headerlink" href="#api.models.Measurement.temperature" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.Measurement.timestamp">
+<span class="sig-name descname"><span class="pre">timestamp</span></span><a class="headerlink" href="#api.models.Measurement.timestamp" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="api.models.User">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.models.</span></span><span class="sig-name descname"><span class="pre">User</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/models.html#User"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.models.User" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">AbstractUser</span></code></p>
+<p>Custom user model extending Django’s AbstractUser.
+Allows for future extensions such as additional fields.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="api.models.User.DoesNotExist">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#api.models.User.DoesNotExist" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="api.models.User.MultipleObjectsReturned">
+<em class="property"><span class="k"><span class="pre">exception</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MultipleObjectsReturned</span></span><a class="headerlink" href="#api.models.User.MultipleObjectsReturned" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">MultipleObjectsReturned</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.date_joined">
+<span class="sig-name descname"><span class="pre">date_joined</span></span><a class="headerlink" href="#api.models.User.date_joined" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.email">
+<span class="sig-name descname"><span class="pre">email</span></span><a class="headerlink" href="#api.models.User.email" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.first_name">
+<span class="sig-name descname"><span class="pre">first_name</span></span><a class="headerlink" href="#api.models.User.first_name" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.models.User.get_next_by_date_joined">
+<span class="sig-name descname"><span class="pre">get_next_by_date_joined</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">date_joined&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#api.models.User.get_next_by_date_joined" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.models.User.get_previous_by_date_joined">
+<span class="sig-name descname"><span class="pre">get_previous_by_date_joined</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field=&lt;django.db.models.fields.DateTimeField:</span> <span class="pre">date_joined&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_next=False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#api.models.User.get_previous_by_date_joined" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.groups">
+<span class="sig-name descname"><span class="pre">groups</span></span><a class="headerlink" href="#api.models.User.groups" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#api.models.User.id" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.is_active">
+<span class="sig-name descname"><span class="pre">is_active</span></span><a class="headerlink" href="#api.models.User.is_active" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.is_staff">
+<span class="sig-name descname"><span class="pre">is_staff</span></span><a class="headerlink" href="#api.models.User.is_staff" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.is_superuser">
+<span class="sig-name descname"><span class="pre">is_superuser</span></span><a class="headerlink" href="#api.models.User.is_superuser" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.last_login">
+<span class="sig-name descname"><span class="pre">last_login</span></span><a class="headerlink" href="#api.models.User.last_login" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.last_name">
+<span class="sig-name descname"><span class="pre">last_name</span></span><a class="headerlink" href="#api.models.User.last_name" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.logentry_set">
+<span class="sig-name descname"><span class="pre">logentry_set</span></span><a class="headerlink" href="#api.models.User.logentry_set" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.password">
+<span class="sig-name descname"><span class="pre">password</span></span><a class="headerlink" href="#api.models.User.password" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.systems">
+<span class="sig-name descname"><span class="pre">systems</span></span><a class="headerlink" href="#api.models.User.systems" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the reverse side of a
+many-to-one relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Child</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">parent</span> <span class="o">=</span> <span class="n">ForeignKey</span><span class="p">(</span><span class="n">Parent</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;children&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Parent.children</span></code> is a <code class="docutils literal notranslate"><span class="pre">ReverseManyToOneDescriptor</span></code> instance.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.user_permissions">
+<span class="sig-name descname"><span class="pre">user_permissions</span></span><a class="headerlink" href="#api.models.User.user_permissions" title="Link to this definition"></a></dt>
+<dd><p>Accessor to the related objects manager on the forward and reverse sides of
+a many-to-many relation.</p>
+<p>In the example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">Pizza</span><span class="p">(</span><span class="n">Model</span><span class="p">):</span>
+    <span class="n">toppings</span> <span class="o">=</span> <span class="n">ManyToManyField</span><span class="p">(</span><span class="n">Topping</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;pizzas&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">Pizza.toppings</span></code> and <code class="docutils literal notranslate"><span class="pre">Topping.pizzas</span></code> are <code class="docutils literal notranslate"><span class="pre">ManyToManyDescriptor</span></code>
+instances.</p>
+<p>Most of the implementation is delegated to a dynamically defined manager
+class built by <code class="docutils literal notranslate"><span class="pre">create_forward_many_to_many_manager()</span></code> defined below.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.models.User.username">
+<span class="sig-name descname"><span class="pre">username</span></span><a class="headerlink" href="#api.models.User.username" title="Link to this definition"></a></dt>
+<dd><p>A wrapper for a deferred-loading field. When the value is read from this
+object the first time, the query is executed.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-api.pagination">
+<span id="api-pagination-module"></span><h2>api.pagination module<a class="headerlink" href="#module-api.pagination" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="api.pagination.MeasurementPagination">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.pagination.</span></span><span class="sig-name descname"><span class="pre">MeasurementPagination</span></span><a class="reference internal" href="_modules/api/pagination.html#MeasurementPagination"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.pagination.MeasurementPagination" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">PageNumberPagination</span></code></p>
+<p>Custom pagination class for Measurement API.
+Limits the number of results per page to avoid excessive database load.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.pagination.MeasurementPagination.max_page_size">
+<span class="sig-name descname"><span class="pre">max_page_size</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">100</span></em><a class="headerlink" href="#api.pagination.MeasurementPagination.max_page_size" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.pagination.MeasurementPagination.page_size">
+<span class="sig-name descname"><span class="pre">page_size</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#api.pagination.MeasurementPagination.page_size" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.pagination.MeasurementPagination.page_size_query_param">
+<span class="sig-name descname"><span class="pre">page_size_query_param</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'page_size'</span></em><a class="headerlink" href="#api.pagination.MeasurementPagination.page_size_query_param" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-api.serializers">
+<span id="api-serializers-module"></span><h2>api.serializers module<a class="headerlink" href="#module-api.serializers" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="api.serializers.HydroponicSystemSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.serializers.</span></span><span class="sig-name descname"><span class="pre">HydroponicSystemSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/serializers.html#HydroponicSystemSerializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.serializers.HydroponicSystemSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializer for the HydroponicSystem model.
+Ensures <cite>owner</cite> is set automatically during creation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="api.serializers.HydroponicSystemSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/api/serializers.html#HydroponicSystemSerializer.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.serializers.HydroponicSystemSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.serializers.HydroponicSystemSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#api.serializers.HydroponicSystemSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.serializers.HydroponicSystemSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#api.serializers.HydroponicSystemSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#api.models.HydroponicSystem" title="api.models.HydroponicSystem"><code class="xref py py-class docutils literal notranslate"><span class="pre">HydroponicSystem</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.serializers.HydroponicSystemSerializer.Meta.read_only_fields">
+<span class="sig-name descname"><span class="pre">read_only_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['owner']</span></em><a class="headerlink" href="#api.serializers.HydroponicSystemSerializer.Meta.read_only_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.serializers.HydroponicSystemSerializer.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validated_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/serializers.html#HydroponicSystemSerializer.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.serializers.HydroponicSystemSerializer.create" title="Link to this definition"></a></dt>
+<dd><p>Create a new hydroponic system and set the authenticated user as the owner.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="api.serializers.MeasurementSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.serializers.</span></span><span class="sig-name descname"><span class="pre">MeasurementSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/serializers.html#MeasurementSerializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.serializers.MeasurementSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializer for the Measurement model.
+Ensures <cite>system</cite> and <cite>timestamp</cite> are read-only.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="api.serializers.MeasurementSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/api/serializers.html#MeasurementSerializer.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.serializers.MeasurementSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.serializers.MeasurementSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'__all__'</span></em><a class="headerlink" href="#api.serializers.MeasurementSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.serializers.MeasurementSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#api.serializers.MeasurementSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#api.models.Measurement" title="api.models.Measurement"><code class="xref py py-class docutils literal notranslate"><span class="pre">Measurement</span></code></a></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.serializers.MeasurementSerializer.Meta.read_only_fields">
+<span class="sig-name descname"><span class="pre">read_only_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['system',</span> <span class="pre">'timestamp']</span></em><a class="headerlink" href="#api.serializers.MeasurementSerializer.Meta.read_only_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="api.serializers.UserRegisterSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.serializers.</span></span><span class="sig-name descname"><span class="pre">UserRegisterSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/serializers.html#UserRegisterSerializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.serializers.UserRegisterSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializer for user registration.
+Ensures password is write-only and securely hashed during user creation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="api.serializers.UserRegisterSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/api/serializers.html#UserRegisterSerializer.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.serializers.UserRegisterSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.serializers.UserRegisterSerializer.Meta.extra_kwargs">
+<span class="sig-name descname"><span class="pre">extra_kwargs</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'password':</span> <span class="pre">{'write_only':</span> <span class="pre">True}}</span></em><a class="headerlink" href="#api.serializers.UserRegisterSerializer.Meta.extra_kwargs" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.serializers.UserRegisterSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['id',</span> <span class="pre">'username',</span> <span class="pre">'password']</span></em><a class="headerlink" href="#api.serializers.UserRegisterSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.serializers.UserRegisterSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#api.serializers.UserRegisterSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#api.models.User" title="api.models.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.serializers.UserRegisterSerializer.create">
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">validated_data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/serializers.html#UserRegisterSerializer.create"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.serializers.UserRegisterSerializer.create" title="Link to this definition"></a></dt>
+<dd><p>Create a new user with a hashed password.
+Uses Django’s <cite>create_user()</cite> to automatically handle password hashing.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="api.serializers.UserSerializer">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.serializers.</span></span><span class="sig-name descname"><span class="pre">UserSerializer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/serializers.html#UserSerializer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.serializers.UserSerializer" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ModelSerializer</span></code></p>
+<p>Serializer for retrieving basic user information.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="api.serializers.UserSerializer.Meta">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Meta</span></span><a class="reference internal" href="_modules/api/serializers.html#UserSerializer.Meta"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.serializers.UserSerializer.Meta" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.serializers.UserSerializer.Meta.fields">
+<span class="sig-name descname"><span class="pre">fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['id',</span> <span class="pre">'username']</span></em><a class="headerlink" href="#api.serializers.UserSerializer.Meta.fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.serializers.UserSerializer.Meta.model">
+<span class="sig-name descname"><span class="pre">model</span></span><a class="headerlink" href="#api.serializers.UserSerializer.Meta.model" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#api.models.User" title="api.models.User"><code class="xref py py-class docutils literal notranslate"><span class="pre">User</span></code></a></p>
+</dd></dl>
+
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-api.tests">
+<span id="api-tests-module"></span><h2>api.tests module<a class="headerlink" href="#module-api.tests" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="api.tests.HydroponicSystemAPITestCase">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.tests.</span></span><span class="sig-name descname"><span class="pre">HydroponicSystemAPITestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#HydroponicSystemAPITestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.HydroponicSystemAPITestCase" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<p>Test case for API endpoints related to hydroponic system management.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.HydroponicSystemAPITestCase.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#HydroponicSystemAPITestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.HydroponicSystemAPITestCase.setUp" title="Link to this definition"></a></dt>
+<dd><p>Prepares test data:
+- Creates a test user and authenticates them.
+- Creates a hydroponic system for the user.
+- Stores the API endpoint for easy access.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.HydroponicSystemAPITestCase.test_create_system">
+<span class="sig-name descname"><span class="pre">test_create_system</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#HydroponicSystemAPITestCase.test_create_system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.HydroponicSystemAPITestCase.test_create_system" title="Link to this definition"></a></dt>
+<dd><p>Test creating a new hydroponic system.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.HydroponicSystemAPITestCase.test_delete_system">
+<span class="sig-name descname"><span class="pre">test_delete_system</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#HydroponicSystemAPITestCase.test_delete_system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.HydroponicSystemAPITestCase.test_delete_system" title="Link to this definition"></a></dt>
+<dd><p>Test deleting a hydroponic system.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.HydroponicSystemAPITestCase.test_get_ordered_systems_list">
+<span class="sig-name descname"><span class="pre">test_get_ordered_systems_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#HydroponicSystemAPITestCase.test_get_ordered_systems_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.HydroponicSystemAPITestCase.test_get_ordered_systems_list" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving systems ordered by creation date.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.HydroponicSystemAPITestCase.test_get_sorted_systems_list">
+<span class="sig-name descname"><span class="pre">test_get_sorted_systems_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#HydroponicSystemAPITestCase.test_get_sorted_systems_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.HydroponicSystemAPITestCase.test_get_sorted_systems_list" title="Link to this definition"></a></dt>
+<dd><p>Test filtering systems by creation date range.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.HydroponicSystemAPITestCase.test_get_system_detail">
+<span class="sig-name descname"><span class="pre">test_get_system_detail</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#HydroponicSystemAPITestCase.test_get_system_detail"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.HydroponicSystemAPITestCase.test_get_system_detail" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving details of a specific hydroponic system.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.HydroponicSystemAPITestCase.test_get_system_list">
+<span class="sig-name descname"><span class="pre">test_get_system_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#HydroponicSystemAPITestCase.test_get_system_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.HydroponicSystemAPITestCase.test_get_system_list" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving a list of hydroponic systems owned by the authenticated user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.HydroponicSystemAPITestCase.test_unauthorized_user_create_system">
+<span class="sig-name descname"><span class="pre">test_unauthorized_user_create_system</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#HydroponicSystemAPITestCase.test_unauthorized_user_create_system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.HydroponicSystemAPITestCase.test_unauthorized_user_create_system" title="Link to this definition"></a></dt>
+<dd><p>Test that an unauthorized user cannot create a hydroponic system.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.HydroponicSystemAPITestCase.test_update_system">
+<span class="sig-name descname"><span class="pre">test_update_system</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#HydroponicSystemAPITestCase.test_update_system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.HydroponicSystemAPITestCase.test_update_system" title="Link to this definition"></a></dt>
+<dd><p>Test updating a hydroponic system using PUT.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="api.tests.MeasurementAPITestCase">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.tests.</span></span><span class="sig-name descname"><span class="pre">MeasurementAPITestCase</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#MeasurementAPITestCase"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.MeasurementAPITestCase" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APITestCase</span></code></p>
+<p>Test case for API endpoints related to measurement management in hydroponic systems.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.MeasurementAPITestCase.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#MeasurementAPITestCase.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.MeasurementAPITestCase.setUp" title="Link to this definition"></a></dt>
+<dd><p>Prepares test data:
+- Creates a user and authenticates them.
+- Creates a hydroponic system for the user.
+- Creates an initial measurement.
+- Stores API URLs for easy access.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.MeasurementAPITestCase.test_create_measurement">
+<span class="sig-name descname"><span class="pre">test_create_measurement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#MeasurementAPITestCase.test_create_measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.MeasurementAPITestCase.test_create_measurement" title="Link to this definition"></a></dt>
+<dd><p>Test creating a new measurement.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.MeasurementAPITestCase.test_delete_measurement">
+<span class="sig-name descname"><span class="pre">test_delete_measurement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#MeasurementAPITestCase.test_delete_measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.MeasurementAPITestCase.test_delete_measurement" title="Link to this definition"></a></dt>
+<dd><p>Test deleting a measurement.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.MeasurementAPITestCase.test_get_measurement_detail">
+<span class="sig-name descname"><span class="pre">test_get_measurement_detail</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#MeasurementAPITestCase.test_get_measurement_detail"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.MeasurementAPITestCase.test_get_measurement_detail" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving a specific measurement by its ID.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.MeasurementAPITestCase.test_get_measurement_list">
+<span class="sig-name descname"><span class="pre">test_get_measurement_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#MeasurementAPITestCase.test_get_measurement_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.MeasurementAPITestCase.test_get_measurement_list" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving a paginated list of measurements for a specific system.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.MeasurementAPITestCase.test_get_measurement_ordered_list">
+<span class="sig-name descname"><span class="pre">test_get_measurement_ordered_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#MeasurementAPITestCase.test_get_measurement_ordered_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.MeasurementAPITestCase.test_get_measurement_ordered_list" title="Link to this definition"></a></dt>
+<dd><p>Test retrieving a list of measurements ordered by pH.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.MeasurementAPITestCase.test_get_measurement_sorted_list">
+<span class="sig-name descname"><span class="pre">test_get_measurement_sorted_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#MeasurementAPITestCase.test_get_measurement_sorted_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.MeasurementAPITestCase.test_get_measurement_sorted_list" title="Link to this definition"></a></dt>
+<dd><p>Test filtering and sorting of measurements using query parameters.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.MeasurementAPITestCase.test_partial_update_measurement">
+<span class="sig-name descname"><span class="pre">test_partial_update_measurement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#MeasurementAPITestCase.test_partial_update_measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.MeasurementAPITestCase.test_partial_update_measurement" title="Link to this definition"></a></dt>
+<dd><p>Test partially updating a measurement using PATCH.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.MeasurementAPITestCase.test_unauthorized_user_create_measurement">
+<span class="sig-name descname"><span class="pre">test_unauthorized_user_create_measurement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#MeasurementAPITestCase.test_unauthorized_user_create_measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.MeasurementAPITestCase.test_unauthorized_user_create_measurement" title="Link to this definition"></a></dt>
+<dd><p>Test that an unauthorized user cannot create a measurement.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.MeasurementAPITestCase.test_update_measurement">
+<span class="sig-name descname"><span class="pre">test_update_measurement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#MeasurementAPITestCase.test_update_measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.MeasurementAPITestCase.test_update_measurement" title="Link to this definition"></a></dt>
+<dd><p>Test updating an existing measurement using PUT.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.tests.MeasurementAPITestCase.test_user_cannot_edit_other_user_measurement">
+<span class="sig-name descname"><span class="pre">test_user_cannot_edit_other_user_measurement</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/tests.html#MeasurementAPITestCase.test_user_cannot_edit_other_user_measurement"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.tests.MeasurementAPITestCase.test_user_cannot_edit_other_user_measurement" title="Link to this definition"></a></dt>
+<dd><p>Test that a user cannot edit a measurement from another user’s system.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-api.urls">
+<span id="api-urls-module"></span><h2>api.urls module<a class="headerlink" href="#module-api.urls" title="Link to this heading"></a></h2>
+</section>
+<section id="module-api.views">
+<span id="api-views-module"></span><h2>api.views module<a class="headerlink" href="#module-api.views" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="api.views.HydroponicsSystemView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.views.</span></span><span class="sig-name descname"><span class="pre">HydroponicsSystemView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#HydroponicsSystemView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.HydroponicsSystemView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<p>API endpoint for managing hydroponic systems.
+Supports filtering and sorting. Paginacja is disabled for system lists.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.HydroponicsSystemView.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#HydroponicsSystemView.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.HydroponicsSystemView.delete" title="Link to this definition"></a></dt>
+<dd><p>Deletes a hydroponic system.
+The authenticated user must be the owner.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.views.HydroponicsSystemView.filter_backends">
+<span class="sig-name descname"><span class="pre">filter_backends</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.filters.OrderingFilter'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'django_filters.rest_framework.backends.DjangoFilterBackend'&gt;]</span></em><a class="headerlink" href="#api.views.HydroponicsSystemView.filter_backends" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.views.HydroponicsSystemView.filterset_class">
+<span class="sig-name descname"><span class="pre">filterset_class</span></span><a class="headerlink" href="#api.views.HydroponicsSystemView.filterset_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#api.filters.HydroponicSystemFilter" title="api.filters.HydroponicSystemFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">HydroponicSystemFilter</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.HydroponicsSystemView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#HydroponicsSystemView.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.HydroponicsSystemView.get" title="Link to this definition"></a></dt>
+<dd><p>Retrieves hydroponic systems:
+- If <cite>pk</cite> is provided, returns details of a single system with the last 10 measurements.
+- Otherwise, returns a list of all systems owned by the user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.HydroponicsSystemView.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">user</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#HydroponicsSystemView.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.HydroponicsSystemView.get_queryset" title="Link to this definition"></a></dt>
+<dd><p>Returns a queryset of hydroponic systems owned by the authenticated user.
+Uses <cite>order_by()</cite> for default sorting.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.views.HydroponicsSystemView.ordering">
+<span class="sig-name descname"><span class="pre">ordering</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'created_date'</span></em><a class="headerlink" href="#api.views.HydroponicsSystemView.ordering" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.views.HydroponicsSystemView.ordering_fields">
+<span class="sig-name descname"><span class="pre">ordering_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['name',</span> <span class="pre">'created_date']</span></em><a class="headerlink" href="#api.views.HydroponicsSystemView.ordering_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.HydroponicsSystemView.patch">
+<span class="sig-name descname"><span class="pre">patch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#HydroponicsSystemView.patch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.HydroponicsSystemView.patch" title="Link to this definition"></a></dt>
+<dd><p>Partially updates an existing hydroponic system.
+The authenticated user must be the owner.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.views.HydroponicsSystemView.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#api.views.HydroponicsSystemView.permission_classes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.HydroponicsSystemView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#HydroponicsSystemView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.HydroponicsSystemView.post" title="Link to this definition"></a></dt>
+<dd><p>Creates a new hydroponic system and assigns the authenticated user as the owner.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.HydroponicsSystemView.put">
+<span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pk</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#HydroponicsSystemView.put"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.HydroponicsSystemView.put" title="Link to this definition"></a></dt>
+<dd><p>Updates an existing hydroponic system.
+The authenticated user must be the owner.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="api.views.MeasurementView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.views.</span></span><span class="sig-name descname"><span class="pre">MeasurementView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#MeasurementView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.MeasurementView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<p>API endpoint for managing measurements in a hydroponic system.</p>
+<p>Supported HTTP methods:
+- GET: Retrieve one or all measurements with pagination.
+- POST: Create a new measurement.
+- PUT/PATCH: Update a specific measurement.
+- DELETE: Delete a specific measurement.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.MeasurementView.delete">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurement_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#MeasurementView.delete"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.MeasurementView.delete" title="Link to this definition"></a></dt>
+<dd><p>Delete a specific measurement.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.views.MeasurementView.filter_backends">
+<span class="sig-name descname"><span class="pre">filter_backends</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.filters.OrderingFilter'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'django_filters.rest_framework.backends.DjangoFilterBackend'&gt;]</span></em><a class="headerlink" href="#api.views.MeasurementView.filter_backends" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.views.MeasurementView.filterset_class">
+<span class="sig-name descname"><span class="pre">filterset_class</span></span><a class="headerlink" href="#api.views.MeasurementView.filterset_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#api.filters.MeasurementFilter" title="api.filters.MeasurementFilter"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementFilter</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.MeasurementView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurement_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#MeasurementView.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.MeasurementView.get" title="Link to this definition"></a></dt>
+<dd><p>Retrieve measurements.
+- If <cite>measurement_id</cite> is provided, returns a single measurement.
+- Otherwise, returns a paginated list of all measurements for the system.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.MeasurementView.get_queryset">
+<span class="sig-name descname"><span class="pre">get_queryset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#MeasurementView.get_queryset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.MeasurementView.get_queryset" title="Link to this definition"></a></dt>
+<dd><p>Returns a queryset of measurements that belong to a system owned by the authenticated user.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.MeasurementView.get_system">
+<span class="sig-name descname"><span class="pre">get_system</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">system_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#MeasurementView.get_system"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.MeasurementView.get_system" title="Link to this definition"></a></dt>
+<dd><p>Returns the HydroponicSystem if it belongs to the authenticated user, otherwise raises 404.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.views.MeasurementView.ordering">
+<span class="sig-name descname"><span class="pre">ordering</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['timestamp']</span></em><a class="headerlink" href="#api.views.MeasurementView.ordering" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.views.MeasurementView.ordering_fields">
+<span class="sig-name descname"><span class="pre">ordering_fields</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['ph',</span> <span class="pre">'temperature',</span> <span class="pre">'tds',</span> <span class="pre">'timestamp']</span></em><a class="headerlink" href="#api.views.MeasurementView.ordering_fields" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.views.MeasurementView.pagination_class">
+<span class="sig-name descname"><span class="pre">pagination_class</span></span><a class="headerlink" href="#api.views.MeasurementView.pagination_class" title="Link to this definition"></a></dt>
+<dd><p>alias of <a class="reference internal" href="#api.pagination.MeasurementPagination" title="api.pagination.MeasurementPagination"><code class="xref py py-class docutils literal notranslate"><span class="pre">MeasurementPagination</span></code></a></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.MeasurementView.patch">
+<span class="sig-name descname"><span class="pre">patch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurement_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#MeasurementView.patch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.MeasurementView.patch" title="Link to this definition"></a></dt>
+<dd><p>Partially update a specific measurement.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.views.MeasurementView.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#api.views.MeasurementView.permission_classes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.MeasurementView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#MeasurementView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.MeasurementView.post" title="Link to this definition"></a></dt>
+<dd><p>Create a new measurement in the specified system.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.MeasurementView.put">
+<span class="sig-name descname"><span class="pre">put</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">measurement_id</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#MeasurementView.put"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.MeasurementView.put" title="Link to this definition"></a></dt>
+<dd><p>Fully update a specific measurement.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="api.views.RegisterView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.views.</span></span><span class="sig-name descname"><span class="pre">RegisterView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#RegisterView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.RegisterView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<p>API endpoint for user registration.
+Allows anyone to register a new account.
+Returns the created user along with JWT tokens.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.views.RegisterView.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.AllowAny'&gt;]</span></em><a class="headerlink" href="#api.views.RegisterView.permission_classes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.RegisterView.post">
+<span class="sig-name descname"><span class="pre">post</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#RegisterView.post"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.RegisterView.post" title="Link to this definition"></a></dt>
+<dd><p>Handles user registration.
+- Validates user input.
+- Creates a new user.
+- Returns the user data along with JWT tokens.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="api.views.UserView">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">api.views.</span></span><span class="sig-name descname"><span class="pre">UserView</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#UserView"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.UserView" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">APIView</span></code></p>
+<p>API endpoint for retrieving user data.
+Allows only authenticated users to access user details.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="api.views.UserView.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">request</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">user_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/api/views.html#UserView.get"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#api.views.UserView.get" title="Link to this definition"></a></dt>
+<dd><p>Retrieves user information.
+- If <cite>user_id</cite> is provided, returns details of a specific user.
+- Otherwise, returns a list of all users.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="api.views.UserView.permission_classes">
+<span class="sig-name descname"><span class="pre">permission_classes</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">[&lt;class</span> <span class="pre">'rest_framework.permissions.IsAuthenticated'&gt;]</span></em><a class="headerlink" href="#api.views.UserView.permission_classes" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-api">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-api" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="HydroponicSystemAPI documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.migrations.html" class="btn btn-neutral float-right" title="api.migrations package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Krzysztof Czerniachowicz.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
